@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="55dp"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp">
+
+    <!--register textbar-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Register a new account!"
+        android:layout_marginBottom="15dp"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        />
+
+    <!--Username textbar-->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:id="@+id/input_username"
+            android:hint="UserName"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <!--Email address textbar-->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:id="@+id/input_email"
+            android:hint="Email Address"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <!--Password textbar-->
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:id="@+id/input_password"
+            android:hint="Password"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+    <!--register button-->
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/register_button"
+        android:text="Register"
+        android:padding="12dp"
+        android:background="@drawable/white_rounded_button"/>
+
+
+</LinearLayout>
+
+    <ProgressBar
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/RegisterRequestProgressLoadingBar"
+        android:layout_centerInParent="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please wait..."
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_alignBottom="@id/RegisterRequestProgressLoadingBar"
+        android:layout_alignLeft="@id/RegisterRequestProgressLoadingBar"
+        android:layout_alignRight="@id/RegisterRequestProgressLoadingBar"/>
+</android.widget.RelativeLayout>

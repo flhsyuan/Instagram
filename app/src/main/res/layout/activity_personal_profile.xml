@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/layout_center_profile"/>
+        <include layout="@layout/layout_bottom_navigation_view"/>
+
+        <ProgressBar
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/profile_progress_bar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="150dp"/>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
