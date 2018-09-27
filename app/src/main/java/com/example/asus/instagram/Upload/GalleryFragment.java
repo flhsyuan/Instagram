@@ -143,9 +143,9 @@ public class GalleryFragment extends Fragment{
         GridImageAdapter adapter = new GridImageAdapter(getActivity(), R.layout.layout_grid_imageview, mAppend, imgURLs);
         gridView.setAdapter(adapter);
 
-        //set the first image to be displayed when the activity fragment view is inflated
-        setImage(imgURLs.get(0), galleryImage, mAppend);
-        mSelectedImage = imgURLs.get(0);
+//        //set the first image to be displayed when the activity fragment view is inflated
+//        setImage(imgURLs.get(0), galleryImage, mAppend);
+//        mSelectedImage = imgURLs.get(0);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
