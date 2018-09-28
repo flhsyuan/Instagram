@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:id="@+id/input_username"
+            android:id="@+id/Register_input_username"
             android:hint="UserName"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
-            android:id="@+id/input_email"
+            android:id="@+id/Register_input_email"
             android:hint="Email Address"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:id="@+id/input_password"
+            android:id="@+id/Register_input_password"
             android:hint="Password"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:id="@+id/register_button"
+        android:id="@+id/Register_button"
         android:text="Register"
         android:padding="12dp"
         android:background="@drawable/white_rounded_button"/>
@@ -89,16 +89,17 @@
     <ProgressBar
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/RegisterRequestProgressLoadingBar"
+        android:id="@+id/Register_ProgressLoadingBar"
         android:layout_centerInParent="true"
         />
     <TextView
+        android:id="@+id/Register_PleaseWait"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Please wait..."
         android:textSize="15dp"
         android:textColor="@color/black"
-        android:layout_alignBottom="@id/RegisterRequestProgressLoadingBar"
-        android:layout_alignLeft="@id/RegisterRequestProgressLoadingBar"
-        android:layout_alignRight="@id/RegisterRequestProgressLoadingBar"/>
+        android:layout_alignBottom="@id/Register_ProgressLoadingBar"
+        android:layout_alignLeft="@id/Register_ProgressLoadingBar"
+        android:layout_alignRight="@id/Register_ProgressLoadingBar"/>
 </android.widget.RelativeLayout>

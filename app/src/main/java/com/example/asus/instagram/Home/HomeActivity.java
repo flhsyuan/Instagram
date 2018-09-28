@@ -31,7 +31,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private Context mContext = HomeActivity.this;
 
-
+    //firebase
     private FirebaseAuth mAuth;
 
     @Override
@@ -115,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user){
         //check if the user is logged in
-//                checkCurrentUser(user);
+                checkCurrentUser(user);
                 if(user != null){
                     //user is signed in
                     Log.d(TAG, "onAuthStateChanged: signed_in" + user.getUid());
@@ -124,5 +124,7 @@ public class HomeActivity extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged: signed_out");
                 }
     }
+
+
 
 }
