@@ -16,11 +16,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.example.asus.instagram.R;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 
 public class FirebaseMethods {
 
+    //firebase
     private FirebaseAuth mAuth;
+    private StorageReference mStorageReference;
 
     private Context mContext;
 
@@ -35,6 +40,31 @@ public class FirebaseMethods {
         if (mAuth.getCurrentUser() != null){
             this.userID = mAuth.getCurrentUser().getUid();
         }
+    }
+
+    public void uploadNewPhoto(String photoType, String caption, int count, String imgUrl){
+        Log.d(TAG, "uploadNewPhoto: attempting to upload new photo.");
+
+        FilePaths filePaths = new FilePaths();
+        //case new photo
+        if(photoType.equals(mContext.getString(R.string.new_photo))){
+            Log.d(TAG, "uploadNewPhoto: uploading NEW photo");
+        }
+        //case profile photo
+        else if(photoType.equals(mContext.getString(R.string.profile_photo))){
+            Log.d(TAG, "uploadNewPhoto: uploading PROFILE photo");
+        }
+    }
+
+    public int getImageCount(DataSnapshot dataSnapshot){
+        int count = 0;
+        for(DataSnapshot ds: dataSnapshot
+                .child(mContext.getString(R.string.dbname_user_photos))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .getChildren()){
+            count++;
+        }
+        return count;
     }
 
 /**
@@ -59,13 +89,11 @@ public class FirebaseMethods {
 
                             Toast.makeText(mContext, "Register success.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(user);
                         } else {
                             // If register fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(mContext, "Register failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
 
                         // ...
@@ -73,29 +101,6 @@ public class FirebaseMethods {
                 });
     }
 
-
-    private void updateUI(FirebaseUser user){
-        //check if the user is logged in
-//        checkCurrentUser(user);
-        if(user != null){
-            //user is signed in
-            Log.d(TAG, "onAuthStateChanged: signed_in" + user.getUid());
-        }else{
-            //user is signed out
-            Log.d(TAG, "onAuthStateChanged: signed_out");
-        }
-    }
-
-      /*
-//    checks to see if the @param user is logged in
-//     */
-//    private void checkCurrentUser(FirebaseUser user){
-//        Log.d(TAG, "checkCurrentUser: checking if user is logged in.");
-//        if(user == null){
-//            Intent intent = new Intent(mContext,LoginActivity.class);
-//            startActivity(intent);
-//        }
-//    }
 
 
     /**
