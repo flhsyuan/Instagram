@@ -34,7 +34,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDB;
     private DatabaseReference myRef;
-    private String randomString;
+    private String randomString="";
 
     private Context mContext;
     private EditText mEmail, mPassword, mUsername;
@@ -127,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
                     //user is signed in
                     Log.d(TAG, "onAuthStateChanged: signed_in " + user.getUid());
@@ -139,10 +139,18 @@ public class RegisterActivity extends AppCompatActivity {
                             if(firebaseMethods.checkUserNameDuplication(username,dataSnapshot)){
                                 randomString = myRef.push().getKey().substring(0,4);
                                 Log.d(TAG, "onDataChange: userNmae already exist! the name has append "+ randomString);
+                                username = username + randomString;
                             }
-                            username = username + randomString;
+
 
                             // Add new user to the DB
+                            firebaseMethods.addNewUser(email,username,"","");
+
+
+                            Toast.makeText(mContext,"signup successful! ",Toast.LENGTH_SHORT).show();
+                            //TODO signout
+
+                            mAuth.signOut();
 
 
                             // Add new user settings to the DB
@@ -153,6 +161,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                         }
                     });
+
+                    finish(); // back to the previous activity
                 }else{
                     //user is signed out
                     Log.d(TAG, "onAuthStateChanged: signed_out");
