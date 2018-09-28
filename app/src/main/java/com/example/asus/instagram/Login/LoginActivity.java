@@ -85,13 +85,27 @@ public class LoginActivity extends AppCompatActivity {
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
+
+//                                    try {
+//
+//                                    }catch (NullPointerException e){
+//                                        Log.d(TAG, "onComplete: NullPointerException "+ e.getMessage());
+//                                    }
+
+//                                    Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+//                                    startActivity(intent);
+
+
+
                                     if (task.isSuccessful()) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
+                                        Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                                        startActivity(intent);
                                         Toast.makeText(LoginActivity.this, "Authentication success.",
                                                 Toast.LENGTH_SHORT).show();
-                                        mProgressBar.setVisibility(View.GONE);
-                                        mPleaseWait.setVisibility(View.GONE);
+//                                        mProgressBar.setVisibility(View.GONE);
+//                                        mPleaseWait.setVisibility(View.GONE);
 
                                     } else {
                                         // If sign in fails, display a message to the user.

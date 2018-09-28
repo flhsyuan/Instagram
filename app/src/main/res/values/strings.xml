@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Instagram</string>
-
+    <!--Fragment names-->
     <string name="edit_profile">Edit Profile</string>
-
     <string name="sign_out">Sign out</string>
 
     <!--Robin-->
@@ -11,6 +10,11 @@
     <string name="string_open_camera">Open Camera</string>
     <string name="string_next">Next</string>
     <string name="string_share">Share</string>
-        <!-- Intent Extras -->
+
+    <!-- Intent Extras -->
     <string name="selected_image">selected_image</string>
+
+    <!-- Firebase database fields ... reflect the data structure in firebaseDB-->
+    <string name="dbname_users">users</string>
+    <string name="dbname_user_account_settings">user_account_settings</string>
 </resources>
