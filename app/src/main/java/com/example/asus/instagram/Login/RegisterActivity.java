@@ -6,6 +6,7 @@ package com.example.asus.instagram.Login;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
     //firebase Authentication & DB
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase mFirebaseDB;
     private DatabaseReference myRef;
     private String randomString;
@@ -61,10 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         initWidget();
 
-        mAuth = FirebaseAuth.getInstance();
-
-        mFirebaseDB = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDB.getReference();
+        setupFirebaseAuth();
 
         initRegisterInfo();
     }
@@ -119,59 +118,61 @@ public class RegisterActivity extends AppCompatActivity {
 
     //--------------------------firebase-----------------------------
     //Yuan
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDB = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDB.getReference();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null){
+                    //user is signed in
+                    Log.d(TAG, "onAuthStateChanged: signed_in " + user.getUid());
+
+                    myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override //show when the data is changed
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // 1. check if the username is already exist
+                            if(firebaseMethods.checkUserNameDuplication(username,dataSnapshot)){
+                                randomString = myRef.push().getKey().substring(0,4);
+                                Log.d(TAG, "onDataChange: userNmae already exist! the name has append "+ randomString);
+                            }
+                            username = username + randomString;
+
+                            // Add new user to the DB
+
+
+                            // Add new user settings to the DB
+                        }
+
+                        @Override//show when error occurs
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }else{
+                    //user is signed out
+                    Log.d(TAG, "onAuthStateChanged: signed_out");
+                }
+            }
+        };
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
-    private void updateUI(FirebaseUser user){
-        //check if the user is logged in
-//        checkCurrentUser(user);
-        if(user != null){
-            //user is signed in
-            Log.d(TAG, "onAuthStateChanged: signed_in " + user.getUid());
-
-            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override //show when the data is changed
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    // 1. check if the username is already exist
-                    if(firebaseMethods.checkUserNameDuplication(username,dataSnapshot)){
-                        randomString = myRef.push().getKey().substring(0,4);
-                        Log.d(TAG, "onDataChange: userNmae already exist! the name has append "+ randomString);
-                    }
-                    username = username + randomString;
-
-                    // Add new user to the DB
-
-
-                    // Add new user settings to the DB
-                }
-
-                @Override//show when error occurs
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-
-        }else{
-            //user is signed out
-            Log.d(TAG, "onAuthStateChanged: signed_out");
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
         }
     }
 
-      /*
-    checks to see if the @param user is logged in
-     */
-//    private void checkCurrentUser(FirebaseUser user){
-//        Log.d(TAG, "checkCurrentUser: checking if user is logged in.");
-//        if(user == null){
-//            Intent intent = new Intent(mContext,LoginActivity.class);
-//            startActivity(intent);
-//        }
-//    }
 }

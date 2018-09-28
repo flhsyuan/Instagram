@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     //TODO XI
     //firebase
      private FirebaseAuth mAuth;
+     private FirebaseAuth.AuthStateListener mAuthListener;
 
      private Context mContext;
      private ProgressBar mProgressBar;
@@ -58,44 +59,10 @@ public class LoginActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.GONE);
         mPleaseWait.setVisibility(View.GONE);
 
-        mAuth = FirebaseAuth.getInstance();
+//        mAuth = FirebaseAuth.getInstance();
+        setupFirebaseAuth();
         initLoginButton();
     }
-
-    //--------------------------firebase-----------------------------
-    //Yuan
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-    /*
-    checks to see if the @param user is logged in
-     */
-    private void checkCurrentUser(FirebaseUser user){
-        Log.d(TAG, "checkCurrentUser: checking if user is logged in.");
-        if(user == null){
-            Intent intent = new Intent(mContext,LoginActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    private void updateUI(FirebaseUser user){
-        //check if the user is logged in
-//        checkCurrentUser(user);
-        if(user != null){
-            //user is signed in
-            Log.d(TAG, "onAuthStateChanged: signed_in" + user.getUid());
-        }else{
-            //user is signed out
-            Log.d(TAG, "onAuthStateChanged: signed_out");
-        }
-    }
-
 
     // The logic of click the login button
     private void initLoginButton(){
@@ -123,8 +90,6 @@ public class LoginActivity extends AppCompatActivity {
                                         Log.d(TAG, "signInWithEmail:success");
                                         Toast.makeText(LoginActivity.this, "Authentication success.",
                                                 Toast.LENGTH_SHORT).show();
-                                        FirebaseUser user = mAuth.getCurrentUser();
-                                        updateUI(user);
                                         mProgressBar.setVisibility(View.GONE);
                                         mPleaseWait.setVisibility(View.GONE);
 
@@ -133,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                                         Log.w(TAG, "signInWithEmail:failure", task.getException());
                                         Toast.makeText(LoginActivity.this, "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show();
-                                        updateUI(null);
                                         mProgressBar.setVisibility(View.GONE);
                                         mPleaseWait.setVisibility(View.GONE);
                                     }
@@ -145,8 +109,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         /**
-        * Go to the home page if login successfully
-        */
+         * Go to the home page if login successfully
+         */
         if(mAuth.getCurrentUser() != null){
             Intent goToHomePage = new Intent(mContext,HomeActivity.class);
             startActivity(goToHomePage);
@@ -165,4 +129,52 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    /*
+    checks to see if the @param user is logged in
+     */
+    private void checkCurrentUser(FirebaseUser user){
+        Log.d(TAG, "checkCurrentUser: checking if user is logged in.");
+        if(user == null){
+            Intent intent = new Intent(mContext,LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    //--------------------------firebase-----------------------------
+    //Yuan
+
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
+        mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null){
+                    //user is signed in
+                    Log.d(TAG, "onAuthStateChanged: signed_in" + user.getUid());
+                }else{
+                    //user is signed out
+                    Log.d(TAG, "onAuthStateChanged: signed_out");
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
 }
