@@ -3,6 +3,8 @@
     <!--Fragment names-->
     <string name="edit_profile">Edit Profile</string>
     <string name="sign_out">Sign out</string>
+    <string name="profile_fragment">Profile</string>
+
 
     <!-- Firebase database fields -->
     <string name="dbname_photos">photos</string>
