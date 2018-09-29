@@ -153,7 +153,7 @@ public class RegisterActivity extends AppCompatActivity {
                             mAuth.signOut();
 
 
-                            // Add new user settings to the DB
+
                         }
 
                         @Override//show when error occurs

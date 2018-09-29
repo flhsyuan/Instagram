@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.widget.RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_SureToSignOut"
+            android:textSize="30dp"
+            android:text="Are you sure to sign out?"
+            android:textColor="@color/black"
+            android:layout_marginBottom="40dp"/>
+
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_sureToSignOut"
+            android:text="Sign Out"
+            android:textColor="@color/black"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/text_SureToSignOut"
+            android:background="@drawable/white_rounded_button"/>
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/signOut_ProgressLoadingBar"
+        android:layout_centerInParent="true"
+        />
+    <TextView
+        android:id="@+id/SignOut_signingout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Signing out..."
+        android:textSize="15dp"
+        android:textColor="@color/black"
+        android:layout_alignBottom="@id/signOut_ProgressLoadingBar"
+        android:layout_alignLeft="@id/signOut_ProgressLoadingBar"
+        android:layout_alignRight="@id/signOut_ProgressLoadingBar"/>
+</android.widget.RelativeLayout>

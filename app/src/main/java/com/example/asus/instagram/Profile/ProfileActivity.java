@@ -33,13 +33,13 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_profile);
-        Log.d(TAG, "onCreate: started");
+        Log.d(TAG, "onCreate: personal_profile started");
 
         setupBottomNavigationView();
         setupToolBar();
         setupActivityWidgets();
         setProfileImage();
-        tempGridSetup();
+//        tempGridSetup();
     }
 
     /**
@@ -53,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked signOut");
-                Intent intent = new Intent(mContext,AccountSettingsActivity.class);
+                Intent intent = new Intent(mContext,SingOutFragment.class);
                 startActivity(intent);
             }
         });
