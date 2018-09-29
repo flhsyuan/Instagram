@@ -4,12 +4,20 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="sign_out">Sign out</string>
 
+    <!-- Firebase database fields -->
+    <string name="dbname_photos">photos</string>
+    <string name="dbname_user_photos">user_photos</string>
+
     <!--Robin-->
     <string name="gallery">GALLERY</string>
     <string name="photo">PHOTO</string>
     <string name="string_open_camera">Open Camera</string>
     <string name="string_next">Next</string>
     <string name="string_share">Share</string>
+
+    <!-- photo types -->
+    <string name="new_photo">new_photo</string>
+    <string name="profile_photo">profile_photo</string>
 
     <!-- Intent Extras -->
     <string name="selected_image">selected_image</string>
