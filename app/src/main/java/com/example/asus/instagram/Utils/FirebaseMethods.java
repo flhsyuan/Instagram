@@ -17,6 +17,7 @@ import com.example.asus.instagram.Models.Photo;
 import com.example.asus.instagram.Models.User;
 import com.example.asus.instagram.Models.UserAccountsettings;
 import com.example.asus.instagram.Models.UserSettings;
+import com.example.asus.instagram.Profile.ProfileActivity;
 import com.example.asus.instagram.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
