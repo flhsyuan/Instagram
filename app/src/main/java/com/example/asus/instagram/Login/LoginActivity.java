@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         mProgressBar.setVisibility(View.GONE);
         mPleaseWait.setVisibility(View.GONE);
 
-//        mAuth = FirebaseAuth.getInstance();
+
         setupFirebaseAuth();
         initLoginButton();
     }
