@@ -25,6 +25,13 @@ public class DiscoverActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: started");
         setupBottomNavigationView();
     }
+
+    @Override
+    protected void onPause() {
+        overridePendingTransition(0,0);
+        super.onPause();
+    }
+
     /**
      * BottomNavigationView setup
      */

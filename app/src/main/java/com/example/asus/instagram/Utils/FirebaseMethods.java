@@ -159,18 +159,6 @@ public class FirebaseMethods {
     }
 
 
-    private void updateUI(FirebaseUser user){
-        //check if the user is logged in
-//        checkCurrentUser(user);
-        if(user != null){
-            //user is signed in
-            Log.d(TAG, "onAuthStateChanged: signed_in" + user.getUid());
-        }else{
-            //user is signed out
-            Log.d(TAG, "onAuthStateChanged: signed_out");
-        }
-    }
-
 
 
 

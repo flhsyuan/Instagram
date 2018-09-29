@@ -48,6 +48,12 @@ public class UploadActivity extends AppCompatActivity {
         //setupBottomNavigationView();
     }
 
+    @Override
+    protected void onPause() {
+        overridePendingTransition(0,0);
+        super.onPause();
+    }
+
     /**
      * return the current tab number
      * 0 = GalleryFragment
@@ -127,6 +133,7 @@ public class UploadActivity extends AppCompatActivity {
            return true;
        }
     }
+
 
     /**
      * BottomNavigationView setup
