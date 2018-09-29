@@ -101,6 +101,8 @@ public class LoginActivity extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
                                         Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                                        mProgressBar.setVisibility(View.GONE);
+                                        mPleaseWait.setVisibility(View.GONE);
                                         startActivity(intent);
                                         Toast.makeText(LoginActivity.this, "Authentication success.",
                                                 Toast.LENGTH_SHORT).show();
