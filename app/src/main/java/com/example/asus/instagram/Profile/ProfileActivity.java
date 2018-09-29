@@ -39,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
         setupToolBar();
         setupActivityWidgets();
         setProfileImage();
-        tempGridSetup();
+//        tempGridSetup();
     }
 
     /**
@@ -53,7 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: clicked signOut");
-                Intent intent = new Intent(mContext,AccountSettingsActivity.class);
+                Intent intent = new Intent(mContext,SingOutFragment.class);
                 startActivity(intent);
             }
         });

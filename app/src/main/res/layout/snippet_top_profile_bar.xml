@@ -42,7 +42,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/black"
                     android:layout_toLeftOf="@id/signout_button"
-                    android:id="@+id/signouttext"/>
+                    android:id="@+id/signout_text"/>
 
             </RelativeLayout>
 

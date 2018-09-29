@@ -126,7 +126,8 @@ public class LoginActivity extends AppCompatActivity {
          * Go to the home page if login successfully
          */
         if(mAuth.getCurrentUser() != null){
-            Intent goToHomePage = new Intent(mContext,HomeActivity.class);
+            Intent goToHomePage = new Intent();
+            goToHomePage.setClass(LoginActivity.this,HomeActivity.class);
             startActivity(goToHomePage);
             finish();              // will not go back to the login page
         }
@@ -140,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "onClick: go to the register page ");
                 Intent goToRegisterPage = new Intent(mContext,RegisterActivity.class);
                 startActivity(goToRegisterPage);
+                finish();//***
             }
         });
     }
