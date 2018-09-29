@@ -28,8 +28,10 @@
         <activity android:name=".Profile.ProfileActivity"></activity>
         <activity android:name=".Profile.AccountSettingsActivity"></activity>
         <activity android:name=".Profile.SingOutFragment"></activity>
+        <!--Yuan: prevent going back to the login page after logged in-->
         <activity android:name=".Login.LoginActivity"
             android:launchMode="singleInstance"></activity>
+
         <activity android:name=".Login.RegisterActivity"></activity>
         <!-- added by Yiqun-->
         <activity android:name=".Upload.NextActivity"></activity>
