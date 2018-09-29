@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success");
                                         Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                                         mProgressBar.setVisibility(View.GONE);
                                         mPleaseWait.setVisibility(View.GONE);
                                         startActivity(intent);

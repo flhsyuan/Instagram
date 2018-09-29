@@ -42,6 +42,12 @@ public class ProfileActivity extends AppCompatActivity {
 //        tempGridSetup();
     }
 
+    @Override
+    protected void onPause() {
+        overridePendingTransition(0,0);
+        super.onPause();
+    }
+
     /**
      * setup Toolbar on the right top of the profile
      */

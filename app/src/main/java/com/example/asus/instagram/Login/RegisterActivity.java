@@ -98,6 +98,8 @@ public class RegisterActivity extends AppCompatActivity {
                      mPleaseWait.setVisibility(View.VISIBLE);
 
                      firebaseMethods.registerNewUserEmail(email,username,password);
+                     mProgressBar.setVisibility(View.GONE);
+                     mPleaseWait.setVisibility(View.GONE);
                  }
             }
         });
@@ -150,7 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(mContext,"signup successful! ",Toast.LENGTH_SHORT).show();
                             //TODO signout
 
-                            mAuth.signOut();
+                            //mAuth.signOut();
 
 
 
