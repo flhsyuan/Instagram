@@ -7,14 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- *****************TOP TOOL BAR**********************-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:id="@+id/relLayout1">
-            <include layout="@layout/snippet_top_profile_bar"/>
-
-        </RelativeLayout>
 
         <!-- *****************CENTER PART**********************-->
         <RelativeLayout
