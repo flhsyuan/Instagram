@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
 
     //firebase
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-
+        setupFirebaseAuth();
 
         initImageLoader();
 
@@ -99,14 +100,27 @@ public class HomeActivity extends AppCompatActivity {
     //--------------------------firebase-----------------------------
     //Yuan
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
+        private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
+        mAuth = FirebaseAuth.getInstance();
 
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                checkCurrentUser(mAuth.getCurrentUser());
+
+                if(user != null){
+                    //user is signed in
+                    Log.d(TAG, "onAuthStateChanged: signed_in" + user.getUid());
+                }else{
+                    //user is signed out
+                    Log.d(TAG, "onAuthStateChanged: signed_out");
+                }
+            }
+        };
+    }
     /*
     checks to see if the @param user is logged in
      */
@@ -118,16 +132,20 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUI(FirebaseUser user){
-        //check if the user is logged in
-                checkCurrentUser(user);
-                if(user != null){
-                    //user is signed in
-                    Log.d(TAG, "onAuthStateChanged: signed_in" + user.getUid());
-                }else{
-                    //user is signed out
-                    Log.d(TAG, "onAuthStateChanged: signed_out");
-                }
+        @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        checkCurrentUser(currentUser);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Instagram</string>
     <!--Fragment names-->
-    <string name="edit_profile">Edit Profile</string>
+    <string name="edit_protrait">Edit Protrait</string>
     <string name="sign_out">Sign out</string>
     <string name="profile_fragment">Profile</string>
 

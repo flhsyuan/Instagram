@@ -83,14 +83,14 @@
             app:layout_constraintTop_toBottomOf="@+id/followingNumber" />
 
         <TextView
-            android:id="@+id/editProfileText"
+            android:id="@+id/editProtraitText"
             android:layout_width="165dp"
             android:layout_height="19dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
-            android:text="Edit your profile!"
+            android:text="Edit your protrait"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"

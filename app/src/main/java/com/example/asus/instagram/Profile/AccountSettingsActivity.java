@@ -50,7 +50,7 @@ public class AccountSettingsActivity extends AppCompatActivity{
         Log.d(TAG, "setupSettings: initializing the list of account settings. ");
         ArrayList<String> settings = new ArrayList<>();//store all fragments
         ListView listView = (ListView) findViewById(R.id.lvAccountSettings);
-        settings.add(getString(R.string.edit_profile));//fragment 0
+        settings.add(getString(R.string.edit_protrait));//fragment 0
         settings.add(getString(R.string.sign_out));//fragment 1
 
         ArrayAdapter adapter = new ArrayAdapter(mcontext,android.R.layout.simple_list_item_1,settings);
