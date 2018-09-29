@@ -83,6 +83,11 @@ public class UploadActivity extends AppCompatActivity {
 
     }
 
+    public int getTask(){
+        Log.d(TAG, "getTask: Task: " + getIntent().getFlags());
+        return getIntent().getFlags();
+    }
+
     /**
      * verify all the permissions passed to the array
      * @param permissions

@@ -21,6 +21,9 @@
 
     <!-- Intent Extras -->
     <string name="selected_image">selected_image</string>
+    <string name="selected_bitmap">selected_bitmap</string>
+    <string name="return_to_fragment">return_to_fragment</string>
+
 
     <!-- Firebase database fields ... reflect the data structure in firebaseDB-->
     <string name="dbname_users">users</string>

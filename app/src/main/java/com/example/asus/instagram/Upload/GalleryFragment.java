@@ -18,9 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.asus.instagram.Profile.AccountSettingsActivity;
+import com.example.asus.instagram.Profile.ProfileActivity;
 import com.example.asus.instagram.R;
 import com.example.asus.instagram.Utils.FilePaths;
 import com.example.asus.instagram.Utils.FileSearch;
+import com.example.asus.instagram.Utils.FirebaseMethods;
 import com.example.asus.instagram.Utils.GridImageAdapter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -76,9 +79,21 @@ public class GalleryFragment extends Fragment{
             public void onClick(View view) {
                 Log.d(TAG, "onClick: navigating to the final upload screen");
 
-                Intent intent = new Intent(getActivity(), NextActivity.class);
-                intent.putExtra(getString(R.string.selected_image), mSelectedImage);
-                startActivity(intent);
+                if(isRootTask()){
+                    Intent intent = new Intent(getActivity(), NextActivity.class);
+                    intent.putExtra(getString(R.string.selected_image), mSelectedImage);
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
+//                    intent.putExtra(getString(R.string.selected_image), mSelectedImage);
+//                    intent.putExtra(getString(R.string.return_to_fragment), getString(R.string.edit_profile));
+                    //set the new profile picture
+                    FirebaseMethods firebaseMethods = new FirebaseMethods(getActivity());
+                    firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo), null, 0, mSelectedImage, null);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+
 
             }
         });
@@ -87,6 +102,15 @@ public class GalleryFragment extends Fragment{
         init();
 
         return view;
+    }
+
+    private boolean isRootTask(){
+        if(((UploadActivity)getActivity()).getTask() == 0){
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     private void init(){
