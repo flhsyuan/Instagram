@@ -26,6 +26,13 @@ public class FeedActivity extends AppCompatActivity {
 
         setupBottomNavigationView();
     }
+
+    @Override
+    protected void onPause() {
+        overridePendingTransition(0,0);
+        super.onPause();
+    }
+
     /**
      * BottomNavigationView setup
      */

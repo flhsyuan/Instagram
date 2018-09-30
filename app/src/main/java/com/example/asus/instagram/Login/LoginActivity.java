@@ -104,8 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                                         startActivity(intent);
                                         Toast.makeText(LoginActivity.this, "Authentication success.",
                                                 Toast.LENGTH_SHORT).show();
-//                                        mProgressBar.setVisibility(View.GONE);
-//                                        mPleaseWait.setVisibility(View.GONE);
+                                        finish();
 
                                     } else {
                                         // If sign in fails, display a message to the user.

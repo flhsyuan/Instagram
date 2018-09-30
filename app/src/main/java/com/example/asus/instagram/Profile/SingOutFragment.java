@@ -83,6 +83,7 @@ public class SingOutFragment extends AppCompatActivity {
                     Log.d(TAG, "onAuthStateChanged: go to the login page");
                     // go back to login activity
                     Intent intent = new Intent(mContext, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
             }

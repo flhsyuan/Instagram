@@ -48,6 +48,12 @@ public class UploadActivity extends AppCompatActivity {
         //setupBottomNavigationView();
     }
 
+    @Override
+    protected void onPause() {
+        overridePendingTransition(0,0);
+        super.onPause();
+    }
+
     /**
      * return the current tab number
      * 0 = GalleryFragment
@@ -75,6 +81,11 @@ public class UploadActivity extends AppCompatActivity {
         tablayout.getTabAt(0).setText(getString(R.string.gallery));
         tablayout.getTabAt(1).setText(getString(R.string.photo));
 
+    }
+
+    public int getTask(){
+        Log.d(TAG, "getTask: Task: " + getIntent().getFlags());
+        return getIntent().getFlags();
     }
 
     /**
@@ -127,6 +138,7 @@ public class UploadActivity extends AppCompatActivity {
            return true;
        }
     }
+
 
     /**
      * BottomNavigationView setup
