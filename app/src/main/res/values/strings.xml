@@ -4,11 +4,17 @@
     <string name="edit_protrait">Edit Protrait</string>
     <string name="sign_out">Sign out</string>
     <string name="profile_fragment">Profile</string>
-
+    <string name="view_post_fragment">View Post</string>
 
     <!-- Firebase database fields -->
     <string name="dbname_photos">photos</string>
     <string name="dbname_user_photos">user_photos</string>
+    <string name="field_username">username</string>
+    <string name="field_email">email</string>
+    <string name="field_display_name">display_name</string>
+    <string name="field_description">description</string>
+    <string name="field_phone_number">phone_number</string>
+
 
     <!--Robin-->
     <string name="gallery">GALLERY</string>
@@ -22,10 +28,13 @@
     <string name="profile_photo">profile_photo</string>
 
     <!-- Intent Extras -->
+    <string name="calling_activity">calling_activity</string>
     <string name="selected_image">selected_image</string>
     <string name="selected_bitmap">selected_bitmap</string>
     <string name="return_to_fragment">return_to_fragment</string>
 
+    <!-- Bundle Arg Names -->
+    <string name="activity_number">activity_number</string>
 
     <!-- Firebase database fields ... reflect the data structure in firebaseDB-->
     <string name="dbname_users">users</string>

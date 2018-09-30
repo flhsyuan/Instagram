@@ -219,8 +219,8 @@ public class FirebaseMethods {
         Log.d(TAG, "setProfilePhoto: setting new profile image: " + url);
 
         myRef.child(mContext.getString(R.string.dbname_user_account_settings))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child(mContext.getString(R.string.profile_photo))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())//find the user
+                .child(mContext.getString(R.string.profile_photo))                                     //find the field profile photo
                 .setValue(url);
     }
 

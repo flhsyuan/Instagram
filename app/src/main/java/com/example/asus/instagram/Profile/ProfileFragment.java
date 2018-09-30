@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 
 import com.example.asus.instagram.Login.LoginActivity;
+import com.example.asus.instagram.Models.Photo;
 import com.example.asus.instagram.Models.User;
 import com.example.asus.instagram.Models.UserAccountsettings;
 import com.example.asus.instagram.Models.UserSettings;
@@ -28,6 +30,7 @@ import com.example.asus.instagram.R;
 import com.example.asus.instagram.Upload.UploadActivity;
 import com.example.asus.instagram.Utils.BottomNavigationViewHelper;
 import com.example.asus.instagram.Utils.FirebaseMethods;
+import com.example.asus.instagram.Utils.GridImageAdapter;
 import com.example.asus.instagram.Utils.UniversalImageLoader;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,7 +38,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -51,7 +57,16 @@ public class ProfileFragment extends Fragment{
     private DatabaseReference myRef;
     private FirebaseMethods firebaseMethods;
 
+    // GridImage Listener interface
+    // Because there are lots of ways to get to view post image fragment
+    public interface OnGridImageSelectedListener{
+        void onGridImageSelected(Photo photo, int activityNumber);
+    }
+    OnGridImageSelectedListener mOnGridImageSelectedListener;
+
+    //static numbers
     private static final int ACTIVITY_NUM = 4;
+    private static final int GRID_COLUNNS = 3;
 
     private Context mContext;
 
@@ -89,6 +104,7 @@ public class ProfileFragment extends Fragment{
         Log.d(TAG, "onCreateView: profile fragment started  ");
 
         setupFirebaseAuth();
+        setupGridView();  //
         setupBottomNavigationView();
         setupSignOutButton();
 
@@ -143,6 +159,10 @@ public class ProfileFragment extends Fragment{
         menuItem.setChecked(true);
     }
 
+    /**
+     * setup several Profile widgets
+     * @param userSettings
+     */
     private  void setProfileWidgets(UserSettings userSettings){
         User user = userSettings.getUser();
         UserAccountsettings userAccountsettings = userSettings.getUserAccountsettings();
@@ -159,10 +179,78 @@ public class ProfileFragment extends Fragment{
 
     }
 
+    /**
+     * call back interface used when several fragments are managed by a single activity
+     * @param context
+     */
+    @Override
+    public void onAttach(Context context) {
+        try{
 
-//    private void editProtrait(){
-//        TextView editProtrait = (TextView)view.findb
-//    }
+            mOnGridImageSelectedListener = (OnGridImageSelectedListener) getActivity();
+        }catch(ClassCastException c){
+
+            Log.d(TAG, "onAttach: ClassCastException " + c.getMessage().toString());
+        }
+        super.onAttach(context);
+    }
+
+    /**
+     * setup grid view, and retrieval uploaded photos of current user
+     */
+
+    private void setupGridView(){
+        Log.d(TAG, "setupGridView: begin to setup grid view in the profile ");
+
+        final ArrayList<Photo> profilePhotos= new ArrayList<>();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+        //retrieval photos according to the user ID using the user_photos in firebase DB
+        Query query = reference.child(getString(R.string.dbname_user_photos)).child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override      //each snapshot here represents a user object.
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds: dataSnapshot.getChildren() ){
+                    profilePhotos.add(ds.getValue(Photo.class));
+                }
+            // put these photos to our image grid
+
+                int gridWidth = getResources().getDisplayMetrics().widthPixels;
+                int imageWidth = gridWidth/GRID_COLUNNS;
+                gridView.setColumnWidth(imageWidth);  // set the width of each photo
+
+                //put all the imageURLs into a list
+                ArrayList<String> imageURLS = new ArrayList<String>();
+                for (int i = 0 ;i < profilePhotos.size();i++){
+                    imageURLS.add(profilePhotos.get(i).getImage_path());
+                }
+
+                GridImageAdapter adapter = new GridImageAdapter(getActivity(),R.layout.layout_grid_imageview,"",imageURLS);
+                gridView.setAdapter(adapter);
+
+                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        mOnGridImageSelectedListener.onGridImageSelected(profilePhotos.get(position),ACTIVITY_NUM);
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: query is stop ");
+            }
+        });
+
+
+
+
+
+    }
 
     //--------------------------firebase-----------------------------
     //Yuan
