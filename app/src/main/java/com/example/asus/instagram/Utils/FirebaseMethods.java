@@ -329,7 +329,7 @@ public class FirebaseMethods {
         myRef.child(mContext.getString(R.string.dbname_users)).child(userID).setValue(user);
 
         // put the user_account_settings object to the firebase DB
-        UserAccountsettings user_account_setting = new UserAccountsettings(StringManipulation.condenseUsername(username),description,username,0,0,0,profilePhoto);
+        UserAccountsettings user_account_setting = new UserAccountsettings(StringManipulation.condenseUsername(username),description,username,0,0,0,profilePhoto,userID);
         myRef.child(mContext.getString(R.string.dbname_user_account_settings)).child(userID).setValue(user_account_setting);
     }
 

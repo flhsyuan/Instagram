@@ -11,17 +11,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.asus.instagram.Models.Photo;
+import com.example.asus.instagram.Models.UserAccountsettings;
+import com.example.asus.instagram.Models.UserSettings;
 import com.example.asus.instagram.R;
 import com.example.asus.instagram.Utils.BottomNavigationViewHelper;
 import com.example.asus.instagram.Utils.SquareImageView;
 import com.example.asus.instagram.Utils.UniversalImageLoader;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -34,6 +46,18 @@ public class ViewPostFragment extends Fragment {
 
     private Photo mPhoto;
     private int ActivityNumber = 0;
+    private String mProtraitString;
+    private String mProtraitURLs;
+    private UserAccountsettings mUserAccountsettings;
+
+    //firebase authentication
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    //firebase database
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
+    private FirebaseMethods firebaseMethods;
 
     //widgets
     private TextView mCaption, mUsername, mPostTime, mBackLabel;
@@ -73,9 +97,14 @@ public class ViewPostFragment extends Fragment {
         }catch (NullPointerException e){
             Log.d(TAG, "onCreateView: photo is null in bundle "+ e.getMessage());
         }
-        // call setupBottomNavigationView() after getting the activity number.
-        setupBottomNavigationView();
-        setupTimedifference();
+
+        setupFirebaseAuth();
+
+        setupButtons();
+
+
+        getPhotoDetails();
+
         return view;
     }
 
@@ -126,18 +155,61 @@ public class ViewPostFragment extends Fragment {
      * setup time difference
      */
 
-    private void setupTimedifference(){
+    private void setupWidgets(){
         String timeDifference = getUpdatedTime();
         if (!timeDifference.equals("0")){
             mPostTime.setText(timeDifference + " Days Ago");
         }else{
             mPostTime.setText("Today");
         }
+        UniversalImageLoader.setImage(mUserAccountsettings.getProfile_photo(), mProtrait,null,"");
+        mUsername.setText(mUserAccountsettings.getUsername());
+
 
     }
 
+    /**
+     * setup some buttons: goback ,bottom navigation bar
+     */
 
+    private void setupButtons(){
+        mBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: clicked go back button.");
+                getActivity().onBackPressed();
+            }
+        });
 
+        // call setupBottomNavigationView() after getting the activity number.
+        setupBottomNavigationView();
+    }
+    /**
+     * get details of posted photo
+     */
+
+    private void getPhotoDetails(){
+        Log.d(TAG, "getPhotoDetails: retrieving photo details.");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference
+                .child(getString(R.string.dbname_user_account_settings))
+                .orderByChild(getString(R.string.field_user_id))
+                .equalTo(mPhoto.getUser_id());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for ( DataSnapshot ds :  dataSnapshot.getChildren()){
+                    mUserAccountsettings = ds.getValue(UserAccountsettings.class);
+                }
+                setupWidgets();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "onCancelled: query cancelled.");
+            }
+        });
+    }
 
 
     /** 
@@ -166,6 +238,46 @@ public class ViewPostFragment extends Fragment {
         menuItem.setChecked(true);
     }
 
+    //--------------------------firebase-----------------------------
+    //Yuan
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+
+    private void setupFirebaseAuth(){
+        Log.d(TAG, "setupFirebaseAuth: setting up firebase auth.");
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null){
+                    //user is signed in
+                    Log.d(TAG, "onAuthStateChanged: signed_in" + user.getUid());
+                }else{
+                    //user is signed out
+                    Log.d(TAG, "onAuthStateChanged: signed_out");
+                }
+            }
+        };
+
+
+    }
 
 }
