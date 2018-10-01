@@ -9,4 +9,7 @@
     <!--Yuan: added new colors-->
     <color name="black">#000000</color>
     <color name="blue">#00BFFF</color>
+    <color name="selected_filter">#221f20</color>
+    <color name="normal_filter">#8a8889</color>
+    <color name="color_option_menu">#FF3990</color>
 </resources>

@@ -77,10 +77,11 @@ public class GalleryFragment extends Fragment{
         nextScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: navigating to the final upload screen");
+                Log.d(TAG, "onClick: navigating to the filter screen");
 
                 if(isRootTask()){
-                    Intent intent = new Intent(getActivity(), NextActivity.class);
+                    //todo:filter pager
+                    Intent intent = new Intent(getActivity(), FilterActivity.class);
                     intent.putExtra(getString(R.string.selected_image), mSelectedImage);
                     startActivity(intent);
                 }else{
@@ -116,7 +117,7 @@ public class GalleryFragment extends Fragment{
     private void init(){
         FilePaths filePaths = new FilePaths();
 
-        //check for other folders indide "/storage/emulated/0/pictures"
+        //check for other folders inside "/storage/emulated/0/pictures"
         if(FileSearch.getDirectoryPaths(filePaths.PICTURES) != null){
             directories = FileSearch.getDirectoryPaths(filePaths.PICTURES);
         }

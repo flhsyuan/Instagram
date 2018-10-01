@@ -81,8 +81,9 @@ public class PhotoFragment extends Fragment{
             bitmap = (Bitmap) data.getExtras().get("data");
             if(isRootTask()){
                 try{
+                    //todo：
                     Log.d(TAG, "onActivityResult: received new bitmap from camera: " + bitmap);
-                    Intent intent = new Intent(getActivity(), NextActivity.class);
+                    Intent intent = new Intent(getActivity(), FilterActivity.class);
                     intent.putExtra(getString(R.string.selected_bitmap), bitmap);
                     startActivity(intent);
                 }catch(NullPointerException e){

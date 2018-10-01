@@ -33,8 +33,12 @@
 
         <activity android:name=".Login.RegisterActivity"></activity>
         <!-- added by Yiqun-->
-        <activity android:name=".Upload.NextActivity"></activity>
+        <activity android:name=".Upload.ShareActivity"></activity>
         <activity android:name=".Upload.UploadActivity"></activity>
+
+        <!--added by Yujie-->
+        <activity android:name=".Upload.FilterActivity"
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"></activity>
 
 
 
