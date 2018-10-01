@@ -219,8 +219,8 @@ public class FirebaseMethods {
         Log.d(TAG, "setProfilePhoto: setting new profile image: " + url);
 
         myRef.child(mContext.getString(R.string.dbname_user_account_settings))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child(mContext.getString(R.string.profile_photo))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())//find the user
+                .child(mContext.getString(R.string.profile_photo))                                     //find the field profile photo
                 .setValue(url);
     }
 
@@ -329,7 +329,7 @@ public class FirebaseMethods {
         myRef.child(mContext.getString(R.string.dbname_users)).child(userID).setValue(user);
 
         // put the user_account_settings object to the firebase DB
-        UserAccountsettings user_account_setting = new UserAccountsettings(StringManipulation.condenseUsername(username),description,username,0,0,0,profilePhoto);
+        UserAccountsettings user_account_setting = new UserAccountsettings(StringManipulation.condenseUsername(username),description,username,0,0,0,profilePhoto,userID);
         myRef.child(mContext.getString(R.string.dbname_user_account_settings)).child(userID).setValue(user_account_setting);
     }
 
