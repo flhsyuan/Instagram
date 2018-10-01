@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.asus.instagram.Interface.EditImageFragmentListener;
 import com.example.asus.instagram.Interface.FiltersListFragmentListener;
 import com.example.asus.instagram.R;
+import com.example.asus.instagram.Utils.ImageManager;
 import com.example.asus.instagram.Utils.ViewPagerAdapter;
 
 import com.zomato.photofilters.imageprocessors.Filter;
@@ -92,32 +93,32 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
 //                Log.d(TAG, "onClick: navigating to the share screen");
                 //todo:filter pager
                 Intent intent = new Intent(FilterActivity.this, ShareActivity.class);
-                intent.putExtra(getString(R.string.selected_bitmap), finalBitmap);
+//                intent.putExtra(getString(R.string.selected_bitmap),finalBitmap);
                 startActivity(intent);
             }
         });
     }
 
     //通过路径将图片转化为Bitmap
-    public static Bitmap getBitmapFromUri(String path, int w, int h) {
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inJustDecodeBounds = true;
-        opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        BitmapFactory.decodeFile(path, opts);
-        int width = opts.outWidth;
-        int height = opts.outHeight;
-        float scaleWidth = 0.f, scaleHeight = 0.f;
-        if (width > w || height > h) {
-            scaleWidth = ((float) width) / w;
-            scaleHeight = ((float) height) / h;
-        }
-        opts.inJustDecodeBounds = false;
-        float scale = Math.max(scaleWidth, scaleHeight);
-        opts.inSampleSize = (int) scale;
-        WeakReference<Bitmap> weak = new WeakReference<Bitmap>(
-                BitmapFactory.decodeFile(path, opts));
-        return Bitmap.createScaledBitmap(weak.get(), w, h, true);
-    }
+//    public static Bitmap getBitmapFromUri(String path, int w, int h) {
+//        BitmapFactory.Options opts = new BitmapFactory.Options();
+//        opts.inJustDecodeBounds = true;
+//        opts.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//        BitmapFactory.decodeFile(path, opts);
+//        int width = opts.outWidth;
+//        int height = opts.outHeight;
+//        float scaleWidth = 0.f, scaleHeight = 0.f;
+//        if (width > w || height > h) {
+//            scaleWidth = ((float) width) / w;
+//            scaleHeight = ((float) height) / h;
+//        }
+//        opts.inJustDecodeBounds = false;
+//        float scale = Math.max(scaleWidth, scaleHeight);
+//        opts.inSampleSize = (int) scale;
+//        WeakReference<Bitmap> weak = new WeakReference<Bitmap>(
+//                BitmapFactory.decodeFile(path, opts));
+//        return Bitmap.createScaledBitmap(weak.get(), w, h, true);
+//    }
 
 
     private void loadImage() throws IOException {
@@ -125,7 +126,7 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
         if (intent.hasExtra(getString(R.string.selected_image))) {
             imgUrl = intent.getStringExtra(getString(R.string.selected_image));
             Log.d(TAG, "loadImage: " + imgUrl);
-            originalBitmap = getBitmapFromUri(imgUrl,300,300);
+            originalBitmap = ImageManager.getBitmap(imgUrl);
         } else if (intent.hasExtra(getString(R.string.selected_bitmap))) {
             originalBitmap = (Bitmap) intent.getParcelableExtra(getString(R.string.selected_bitmap));
 

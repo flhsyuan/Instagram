@@ -123,7 +123,9 @@ public class GalleryFragment extends Fragment{
         }
 
         //added by Yiqun
+        directories.add(filePaths.PICTURES);
         directories.add(filePaths.CAMERA);
+
 
         ArrayList<String> directoryNames = new ArrayList<>();
         for(int i = 0; i < directories.size(); i++){

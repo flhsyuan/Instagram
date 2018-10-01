@@ -76,14 +76,13 @@ public class ShareActivity extends AppCompatActivity{
                 Toast.makeText(ShareActivity.this, "Attempting to upload new photo", Toast.LENGTH_SHORT).show();
                 String caption =mCaption.getText().toString();
 
-                if(intent.hasExtra(getString(R.string.selected_image))){
-                    imgUrl = intent.getStringExtra(getString(R.string.selected_image));
-                    mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, imgUrl, null);
-                }
-                else if(intent.hasExtra(getString(R.string.selected_bitmap))){
-                    bitmap = (Bitmap) intent.getParcelableExtra(getString(R.string.selected_bitmap));
-                    mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, null, bitmap);
-                }
+//                if(intent.hasExtra(getString(R.string.selected_image))){
+//                    mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, imgUrl, null);
+//                }
+//                else if(intent.hasExtra(getString(R.string.selected_bitmap))){
+//                    mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, null, bitmap);
+//                }
+                mFirebaseMethods.uploadNewPhoto(getString(R.string.new_photo), caption, imageCount, null, bitmap);
 
             }
         });
@@ -91,9 +90,6 @@ public class ShareActivity extends AppCompatActivity{
         setImage();
     }
 
-    private void someMethod(){
-
-    }
 
     /**
      * gets the image url from the incoming intent and displays the chosen image
@@ -101,17 +97,19 @@ public class ShareActivity extends AppCompatActivity{
     private void setImage(){
         intent = getIntent();
         ImageView image = (ImageView) findViewById(R.id.imageShare);
-
-        if(intent.hasExtra(getString(R.string.selected_image))){
-            imgUrl = intent.getStringExtra(getString(R.string.selected_image));
-            Log.d(TAG, "setImage: got new image url: " + imgUrl);
-            UniversalImageLoader.setImage(imgUrl, image,null, mAppend);
-        }
-        else if(intent.hasExtra(getString(R.string.selected_bitmap))){
-            bitmap = (Bitmap) intent.getParcelableExtra(getString(R.string.selected_bitmap));
-            Log.d(TAG, "setImage: got new bitmap");
-            image.setImageBitmap(bitmap);
-        }
+//        if(intent.hasExtra(getString(R.string.selected_image))){
+//            imgUrl = intent.getStringExtra(getString(R.string.selected_image));
+//            Log.d(TAG, "setImage: got new image url: " + imgUrl);
+//            UniversalImageLoader.setImage(imgUrl, image,null, mAppend);
+//        }
+//        else if(intent.hasExtra(getString(R.string.selected_bitmap))){
+//            bitmap = (Bitmap) intent.getParcelableExtra(getString(R.string.selected_bitmap));
+//            Log.d(TAG, "setImage: got new bitmap");
+//            image.setImageBitmap(bitmap);
+//        }
+        Log.d(TAG, "setImage: got new bitmap");
+        bitmap = FilterActivity.finalBitmap;
+        image.setImageBitmap(bitmap);
     }
 
     //--------------------------firebase-----------------------------
