@@ -9,8 +9,10 @@ public class UserAccountsettings {
     private long followings;
     private long posts;
     private String profile_photo;
+    private String user_id;
 
-    public UserAccountsettings(String username, String description, String display_name, long followers, long followings, long posts, String profile_photo) {
+
+    public UserAccountsettings(String username, String description, String display_name, long followers, long followings, long posts, String profile_photo, String user_id) {
         this.username = username;
         this.description = description;
         this.display_name = display_name;
@@ -18,6 +20,7 @@ public class UserAccountsettings {
         this.followings = followings;
         this.posts = posts;
         this.profile_photo = profile_photo;
+        this.user_id = user_id;
     }
 
     public UserAccountsettings() {
@@ -78,6 +81,14 @@ public class UserAccountsettings {
 
     public void setProfile_photo(String profile_photo) {
         this.profile_photo = profile_photo;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     @Override

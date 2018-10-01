@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/white_grey_border_bottom">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/profileToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/backArrowPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_goback"
+                />
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="25dp"
+                android:text="Current Photo"
+                android:textColor="@color/black"
+                android:id="@+id/viewBackText"
+                android:layout_toRightOf="@id/backArrowPost"
+                android:layout_marginLeft="15dp"/>
+
+        </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    </merge>
