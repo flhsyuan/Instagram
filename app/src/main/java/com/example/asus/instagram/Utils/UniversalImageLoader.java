@@ -34,6 +34,7 @@ public class UniversalImageLoader {
                 .showImageOnFail(defaultImage)
                 .cacheOnDisk(true).cacheInMemory(true)
                 .cacheOnDisk(true).resetViewBeforeLoading(true)
+                .considerExifParams(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .displayer(new FadeInBitmapDisplayer(300)).build();
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(myContext)
