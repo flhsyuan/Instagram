@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 
 import com.example.asus.instagram.Login.LoginActivity;
+import com.example.asus.instagram.Models.Like;
 import com.example.asus.instagram.Models.Photo;
 import com.example.asus.instagram.Models.User;
 import com.example.asus.instagram.Models.UserAccountsettings;
@@ -42,6 +43,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -214,7 +218,27 @@ public class ProfileFragment extends Fragment{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot ds: dataSnapshot.getChildren() ){
-                    profilePhotos.add(ds.getValue(Photo.class));
+
+                    Photo photo = new Photo();
+                    Map<String,Object> objectMap = (HashMap<String,Object>) ds.getValue();
+
+                    photo.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
+                    photo.setTags(objectMap.get(getString(R.string.field_tags)).toString());
+                    photo.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
+                    photo.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
+                    photo.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
+                    photo.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+
+                    List<Like> likeList = new ArrayList<Like>();
+                    for (DataSnapshot dSnapshot: ds
+                            .child(getString(R.string.field_likes)).getChildren()){
+                        Like like = new Like();
+                        like.setUser_id(dSnapshot.getValue(Like.class).getUser_id());
+                        likeList.add(like);
+                    }
+                    photo.setLikes(likeList);
+                    profilePhotos.add(photo);
+
                 }
             // put these photos to our image grid
 
