@@ -1,5 +1,6 @@
 package com.example.asus.instagram.Utils;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -44,6 +45,13 @@ import static android.support.constraint.Constraints.TAG;
 // set the bundle
 public class ViewPostFragment extends Fragment {
 
+    private static final String TAG = "ViewPostFragment";
+
+    public interface OnCommentThreadSelectedListener{
+        void onCommentThreadSelectedListener(Photo photo);
+    }
+    OnCommentThreadSelectedListener mOnCommentThreadSelectedListener;
+
     private Photo mPhoto;
     private int ActivityNumber = 0;
     private String mProtraitString;
@@ -61,7 +69,7 @@ public class ViewPostFragment extends Fragment {
 
     //widgets
     private TextView mCaption, mUsername, mPostTime, mBackLabel;
-    private ImageView mBackArrow, mProtrait, mEllipses, mHeartRed, mHeartWhite;
+    private ImageView mBackArrow, mProtrait, mEllipses, mHeartRed, mHeartWhite, mComment;
     private SquareImageView mPostImage;
     private BottomNavigationView bottomNavigationView;
 
@@ -88,6 +96,8 @@ public class ViewPostFragment extends Fragment {
         mPostTime = (TextView)view.findViewById(R.id.image_time_post);
 //        mBackLabel = (TextView)view.findViewById(R.id.backArrowPost);
 
+        mComment = (ImageView) view.findViewById(R.id.comment_view_post);
+
         try {
             mPhoto = retrievePhotoFromBundle(); // using universal image loader to show image.
             UniversalImageLoader.setImage(mPhoto.getImage_path(),mPostImage,null,"");
@@ -108,7 +118,15 @@ public class ViewPostFragment extends Fragment {
         return view;
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try{
+            mOnCommentThreadSelectedListener = (OnCommentThreadSelectedListener) getActivity();
+        }catch(ClassCastException e){
+            Log.e(TAG, "onAttach: ClassCastException: " + e.getMessage());
+        }
+    }
 
     /**
      * retrieve Activity Number From incoming Bundle from profile
@@ -164,6 +182,22 @@ public class ViewPostFragment extends Fragment {
         }
         UniversalImageLoader.setImage(mUserAccountsettings.getProfile_photo(), mProtrait,null,"");
         mUsername.setText(mUserAccountsettings.getUsername());
+
+        mBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: navigating back");
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        mComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: navigating back");
+                mOnCommentThreadSelectedListener.onCommentThreadSelectedListener(mPhoto);
+            }
+        });
 
 
     }

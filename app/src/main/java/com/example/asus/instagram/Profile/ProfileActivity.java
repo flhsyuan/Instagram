@@ -11,9 +11,12 @@ import android.widget.ProgressBar;
 
 import com.example.asus.instagram.Models.Photo;
 import com.example.asus.instagram.R;
+import com.example.asus.instagram.Utils.ViewCommentsFragment;
 import com.example.asus.instagram.Utils.ViewPostFragment;
 
-public class ProfileActivity extends AppCompatActivity implements ProfileFragment.OnGridImageSelectedListener{
+public class ProfileActivity extends AppCompatActivity implements
+        ProfileFragment.OnGridImageSelectedListener,
+        ViewPostFragment.OnCommentThreadSelectedListener {
     private static final String TAG = "ProfileActivity";
     private static final int NUM_GRID_PER_COLUMN = 3;
     private static final int ACTIVITY_NUM = 4;
@@ -22,6 +25,20 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
     private ProgressBar myProgressbar;
     private Context mContext = ProfileActivity.this;
 
+    @Override
+    public void onCommentThreadSelectedListener(Photo photo) {
+        Log.d(TAG, "onCommentThreadSelectedListener: selected a comment thread");
+
+        ViewCommentsFragment fragment = new ViewCommentsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(getString(R.string.photo),photo);
+        fragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.profile_container, fragment);
+        transaction.addToBackStack(getString(R.string.view_comments_fragment));
+        transaction.commit();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +75,6 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         transaction.commit();
 
     }
-
 
 
 }
