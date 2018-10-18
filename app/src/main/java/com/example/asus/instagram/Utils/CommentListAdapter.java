@@ -1,6 +1,7 @@
 package com.example.asus.instagram.Utils;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;

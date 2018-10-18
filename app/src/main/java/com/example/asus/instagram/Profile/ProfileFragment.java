@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 
 import com.example.asus.instagram.Login.LoginActivity;
+import com.example.asus.instagram.Models.Comment;
 import com.example.asus.instagram.Models.Like;
 import com.example.asus.instagram.Models.Photo;
 import com.example.asus.instagram.Models.User;
@@ -228,6 +229,19 @@ public class ProfileFragment extends Fragment{
                     photo.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
                     photo.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
                     photo.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+
+                    ArrayList<Comment> comments = new ArrayList<Comment>();
+                    for (DataSnapshot dSnapshot: ds
+                            .child(getString(R.string.field_comments)).getChildren()){
+                        Comment comment = new Comment();
+
+                        comment.setUser_id(dSnapshot.getValue(Comment.class).getUser_id());
+                        comment.setComment(dSnapshot.getValue(Comment.class).getComment());
+                        comment.setDate_created(dSnapshot.getValue(Comment.class).getDate_created());
+                        comments.add(comment);
+                    }
+
+                    photo.setComments(comments);
 
                     List<Like> likeList = new ArrayList<Like>();
                     for (DataSnapshot dSnapshot: ds

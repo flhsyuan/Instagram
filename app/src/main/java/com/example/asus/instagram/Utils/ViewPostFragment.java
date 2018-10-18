@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.asus.instagram.Models.Comment;
 import com.example.asus.instagram.Models.Like;
 import com.example.asus.instagram.Models.Photo;
 import com.example.asus.instagram.Models.User;
@@ -42,6 +43,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import static android.support.constraint.Constraints.TAG;
@@ -80,7 +84,7 @@ public class ViewPostFragment extends Fragment {
     //widgets
 
     private ImageView mBackArrow, mProtrait, mEllipses, mHeartRed, mHeartWhite, mComment;
-    private TextView mCaption, mUsername, mPostTime, mBackLabel, mLikes;
+    private TextView mCaption, mUsername, mPostTime, mBackLabel, mLikes, mComments;
     private SquareImageView mPostImage;
     private BottomNavigationView bottomNavigationView;
 
@@ -112,13 +116,56 @@ public class ViewPostFragment extends Fragment {
         mGestureDetector = new GestureDetector(getActivity(), new GestureListener());
 
         mComment = (ImageView) view.findViewById(R.id.comment_view_post);
+        mComments = (TextView) view.findViewById(R.id.view_all_comments);
 
         try {
-            mPhoto = retrievePhotoFromBundle(); // using universal image loader to show image.
-            UniversalImageLoader.setImage(mPhoto.getImage_path(),mPostImage,null,"");
+            UniversalImageLoader.setImage(retrievePhotoFromBundle().getImage_path(), mPostImage, null, "");
             ActivityNumber = retrieveActivityNumberFromBundle();
-            getPhotoDetails();
-            getLikesString();
+            String photo_id = retrievePhotoFromBundle().getPhoto_id();
+
+            Query query = FirebaseDatabase.getInstance().getReference()
+                    .child(getString(R.string.dbname_photos))
+                    .orderByChild(getString(R.string.field_photo_id))
+                    .equalTo(photo_id);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for ( DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
+                        Photo newPhoto = new Photo();
+                        Map<String, Object> objectMap = (HashMap<String, Object>) singleSnapshot.getValue();
+
+                        newPhoto.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
+                        newPhoto.setTags(objectMap.get(getString(R.string.field_tags)).toString());
+                        newPhoto.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
+                        newPhoto.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
+                        newPhoto.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
+                        newPhoto.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+
+                        List<Comment> commentsList = new ArrayList<Comment>();
+                        for (DataSnapshot dSnapshot : singleSnapshot
+                                .child(getString(R.string.field_comments)).getChildren()){
+                            Comment comment = new Comment();
+                            comment.setUser_id(dSnapshot.getValue(Comment.class).getUser_id());
+                            comment.setComment(dSnapshot.getValue(Comment.class).getComment());
+                            comment.setDate_created(dSnapshot.getValue(Comment.class).getDate_created());
+                            commentsList.add(comment);
+                        }
+                        newPhoto.setComments(commentsList);
+
+                        mPhoto = newPhoto;
+
+                        getPhotoDetails();
+                        getLikesString();
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d(TAG, "onCancelled: query cancelled.");
+                }
+            });
 
 
         }catch (NullPointerException e){
@@ -380,6 +427,37 @@ public class ViewPostFragment extends Fragment {
         mLikes.setText(mLikesString);
         mCaption.setText(mPhoto.getCaption());
 
+        if(mPhoto.getComments().size()>0) {
+            mComments.setText("View all " + mPhoto.getComments().size() + "comments");
+        }else{
+            mComments.setText("");
+        }
+
+        mComments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: navigating to comments thread");
+
+                mOnCommentThreadSelectedListener.onCommentThreadSelectedListener(mPhoto);
+            }
+        });
+
+        mBackArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: navigating back");
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
+        mComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: navigating back");
+                mOnCommentThreadSelectedListener.onCommentThreadSelectedListener(mPhoto);
+            }
+        });
+
         if(likedByCurrentUser){
             mHeartWhite.setVisibility(View.GONE);
             mHeartRed.setVisibility(View.VISIBLE);
@@ -400,22 +478,6 @@ public class ViewPostFragment extends Fragment {
                 }
             });
         }
-
-        mBackArrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: navigating back");
-                getActivity().getSupportFragmentManager().popBackStack();
-            }
-        });
-
-        mComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: navigating back");
-                mOnCommentThreadSelectedListener.onCommentThreadSelectedListener(mPhoto);
-            }
-        });
 
 
 
