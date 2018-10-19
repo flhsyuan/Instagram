@@ -38,12 +38,13 @@ import java.io.IOException;
  * @time : 16:24
  */
 
-public class FilterActivity extends AppCompatActivity implements FiltersListFragmentListener, EditImageFragmentListener {
+public class FilterActivity extends AppCompatActivity implements
+        FiltersListFragmentListener, EditImageFragmentListener {
 
     public static final String pictureName = "626939的副本.jpg";
     public static final int PERMISSION_PICK_IMAGE = 1000;
     private static final String TAG = FilterActivity.class.getName();
-    public static Bitmap originalBitmap, filteredBitmap, finalBitmap;
+    public static Bitmap originalBitmap;//, filteredBitmap, finalBitmap;
 
     //load native image filters lib
     static {
@@ -61,7 +62,6 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
     float saturationFinal = 1.0f;
     float contrastFinal = 1.0f;
     Uri image_selected_uri;//TODO:新加
-    private String imgUrl;
     private String mSelectedImage;
 
     @Override
@@ -91,11 +91,7 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
             }
         });
 
-        try {
-            loadImage();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loadImage();
 
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
@@ -122,10 +118,11 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
         }
         return super.onOptionsItemSelected(item);
     }
-    private void loadImage() throws IOException {
+
+    private void loadImage() {
         Intent intent = getIntent();
         if (intent.hasExtra(getString(R.string.selected_image))) {
-            imgUrl = intent.getStringExtra(getString(R.string.selected_image));
+            String imgUrl = intent.getStringExtra(getString(R.string.selected_image));
             Log.d(TAG, "loadImage: " + imgUrl);
             originalBitmap = ImageManager.getBitmap(imgUrl);
         } else if (intent.hasExtra(getString(R.string.selected_bitmap))) {
@@ -134,8 +131,8 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
         }
 
 //        originalBitmap=BitmapUtils.getBitmapFromAssets(this,pictureName,300,300);
-        filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+//        filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+//        finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
         //todo
 
         img_preview.setImageBitmap(originalBitmap);
@@ -172,9 +169,12 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
         brightnessFinal = brightness;
         Filter myFilter = new Filter();
         myFilter.addSubFilter(new BrightnessSubFilter(brightness));
-        img_preview.setImageBitmap(myFilter.processFilter(filteredBitmap.copy(Bitmap.Config.ARGB_8888, true)));
+        updateImageView(myFilter);
+    }
 
-
+    private void updateImageView(Filter filter) {
+        originalBitmap = filter.processFilter(originalBitmap.copy(Bitmap.Config.ARGB_8888, true));
+        img_preview.setImageBitmap(originalBitmap);
     }
 
     //adjust the saturation
@@ -182,19 +182,16 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
     public void onSaturationChanged(float saturation) {
         saturationFinal = saturation;
         Filter myFilter = new Filter();
-        myFilter.addSubFilter(new SaturationSubfilter(saturation));
-        img_preview.setImageBitmap(myFilter.processFilter(filteredBitmap.copy(Bitmap.Config.ARGB_8888, true)));
+        updateImageView(myFilter);
 
     }
 
     //adjust the contrast
     @Override
     public void onContrastChanged(float contrast) {
-
         contrastFinal = contrast;
         Filter myFilter = new Filter();
-        myFilter.addSubFilter(new ContrastSubFilter(contrast));
-        img_preview.setImageBitmap(myFilter.processFilter(filteredBitmap.copy(Bitmap.Config.ARGB_8888, true)));
+        updateImageView(myFilter);
 
     }
 
@@ -207,14 +204,14 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
     @Override
     public void onEditCompleted() {
 
-        Bitmap bitmap = filteredBitmap.copy(Bitmap.Config.ARGB_8888, true);
+//        Bitmap bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
 
         Filter myFilter = new Filter();
         myFilter.addSubFilter(new BrightnessSubFilter(brightnessFinal));
         myFilter.addSubFilter(new ContrastSubFilter(contrastFinal));
         myFilter.addSubFilter(new SaturationSubfilter(saturationFinal));
-
-        finalBitmap = myFilter.processFilter(bitmap);
+        updateImageView(myFilter);
+//        originalBitmap = myFilter.processFilter(bitmap);
 
     }
 
@@ -222,9 +219,10 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
     public void onFilterSelected(Filter filter) {
 
         resetControl();
-        filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        img_preview.setImageBitmap(filter.processFilter(filteredBitmap));
-        finalBitmap = filteredBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        updateImageView(filter);
+//        filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+//        img_preview.setImageBitmap(filter.processFilter(filteredBitmap));
+//        finalBitmap = filteredBitmap.copy(Bitmap.Config.ARGB_8888, true);
     }
 
     @Override
@@ -244,7 +242,6 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
     }
 
 
-
     private void handleCropError(Intent intent) {//TODO:新加
 
         final Throwable cropError = UCrop.getError(intent);
@@ -259,7 +256,8 @@ public class FilterActivity extends AppCompatActivity implements FiltersListFrag
     private void handleCropResult(Intent intent) throws IOException {//TODO:新加
         final Uri resultUri = UCrop.getOutput(intent);
         if (resultUri != null) {
-            img_preview.setImageBitmap(MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri));
+            originalBitmap=MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+            img_preview.setImageBitmap(originalBitmap);
         } else {
             Toast.makeText(this, "cannot retrieve crop image", Toast.LENGTH_SHORT).show();
         }
