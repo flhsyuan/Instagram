@@ -33,7 +33,7 @@ public class ShareActivity extends AppCompatActivity{
     private static final String TAG = "ShareActivity";
 
     //firebase
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;gggg
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseD     atabase mFirebaseDB;
     private DatabaseReference myRef;
