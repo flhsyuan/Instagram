@@ -108,7 +108,7 @@ public class ShareActivity extends AppCompatActivity{
 //            image.setImageBitmap(bitmap);
 //        }
         Log.d(TAG, "setImage: got new bitmap");
-        bitmap = FilterActivity.originalBitmap;
+        bitmap = FilterActivity.filteredBitmap;
         image.setImageBitmap(bitmap);
     }
 

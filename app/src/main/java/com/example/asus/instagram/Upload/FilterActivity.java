@@ -44,7 +44,7 @@ public class FilterActivity extends AppCompatActivity implements
     public static final String pictureName = "626939的副本.jpg";
     public static final int PERMISSION_PICK_IMAGE = 1000;
     private static final String TAG = FilterActivity.class.getName();
-    public static Bitmap originalBitmap;//, filteredBitmap, finalBitmap;
+    public static Bitmap originalBitmap, filteredBitmap;//, finalBitmap;
 
     //load native image filters lib
     static {
@@ -86,7 +86,7 @@ public class FilterActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                onCropStart(Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), originalBitmap, null, null)));
+                onCropStart(Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), filteredBitmap, null, null)));
 
             }
         });
@@ -125,11 +125,12 @@ public class FilterActivity extends AppCompatActivity implements
             String imgUrl = intent.getStringExtra(getString(R.string.selected_image));
             Log.d(TAG, "loadImage: " + imgUrl);
             originalBitmap = ImageManager.getBitmap(imgUrl);
+
         } else if (intent.hasExtra(getString(R.string.selected_bitmap))) {
             originalBitmap = (Bitmap) intent.getParcelableExtra(getString(R.string.selected_bitmap));
 
         }
-
+        filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
 //        originalBitmap=BitmapUtils.getBitmapFromAssets(this,pictureName,300,300);
 //        filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
 //        finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -169,20 +170,23 @@ public class FilterActivity extends AppCompatActivity implements
         brightnessFinal = brightness;
         Filter myFilter = new Filter();
         myFilter.addSubFilter(new BrightnessSubFilter(brightness));
-        updateImageView(myFilter);
+        img_preview.setImageBitmap(myFilter.processFilter(filteredBitmap.copy(Bitmap.Config.ARGB_8888, true)));
     }
 
     private void updateImageView(Filter filter) {
-        originalBitmap = filter.processFilter(originalBitmap.copy(Bitmap.Config.ARGB_8888, true));
-        img_preview.setImageBitmap(originalBitmap);
+        filteredBitmap = filter.processFilter(filteredBitmap.copy(Bitmap.Config.ARGB_8888, true));
+        img_preview.setImageBitmap(filteredBitmap);
     }
+
 
     //adjust the saturation
     @Override
     public void onSaturationChanged(float saturation) {
         saturationFinal = saturation;
         Filter myFilter = new Filter();
-        updateImageView(myFilter);
+        myFilter.addSubFilter(new SaturationSubfilter(saturation));
+        img_preview.setImageBitmap(myFilter.processFilter(filteredBitmap.copy(Bitmap.Config.ARGB_8888, true)));
+
 
     }
 
@@ -191,7 +195,9 @@ public class FilterActivity extends AppCompatActivity implements
     public void onContrastChanged(float contrast) {
         contrastFinal = contrast;
         Filter myFilter = new Filter();
-        updateImageView(myFilter);
+        myFilter.addSubFilter(new ContrastSubFilter(contrast));
+        img_preview.setImageBitmap(myFilter.processFilter(filteredBitmap.copy(Bitmap.Config.ARGB_8888, true)));
+
 
     }
 
@@ -204,14 +210,14 @@ public class FilterActivity extends AppCompatActivity implements
     @Override
     public void onEditCompleted() {
 
-//        Bitmap bitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap bitmap = filteredBitmap.copy(Bitmap.Config.ARGB_8888, true);
 
         Filter myFilter = new Filter();
         myFilter.addSubFilter(new BrightnessSubFilter(brightnessFinal));
         myFilter.addSubFilter(new ContrastSubFilter(contrastFinal));
         myFilter.addSubFilter(new SaturationSubfilter(saturationFinal));
         updateImageView(myFilter);
-//        originalBitmap = myFilter.processFilter(bitmap);
+        filteredBitmap = myFilter.processFilter(bitmap);
 
     }
 
@@ -219,9 +225,11 @@ public class FilterActivity extends AppCompatActivity implements
     public void onFilterSelected(Filter filter) {
 
         resetControl();
-        updateImageView(filter);
-//        filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
-//        img_preview.setImageBitmap(filter.processFilter(filteredBitmap));
+
+//        updateImageView(filter);
+        filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        filteredBitmap = filter.processFilter(filteredBitmap);
+        img_preview.setImageBitmap(filteredBitmap);
 //        finalBitmap = filteredBitmap.copy(Bitmap.Config.ARGB_8888, true);
     }
 
@@ -256,8 +264,8 @@ public class FilterActivity extends AppCompatActivity implements
     private void handleCropResult(Intent intent) throws IOException {//TODO:新加
         final Uri resultUri = UCrop.getOutput(intent);
         if (resultUri != null) {
-            originalBitmap=MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-            img_preview.setImageBitmap(originalBitmap);
+            filteredBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+            img_preview.setImageBitmap(filteredBitmap);
         } else {
             Toast.makeText(this, "cannot retrieve crop image", Toast.LENGTH_SHORT).show();
         }
