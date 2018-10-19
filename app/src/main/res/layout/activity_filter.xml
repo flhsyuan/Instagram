@@ -16,8 +16,8 @@
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
-            app:popupTheme="@style/AppTheme.PopUpOverlay">
+            android:background="#fff">
+            <!--app:popupTheme="@style/AppTheme.PopUpOverlay">-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
