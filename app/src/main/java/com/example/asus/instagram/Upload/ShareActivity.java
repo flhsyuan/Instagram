@@ -35,7 +35,7 @@ public class ShareActivity extends AppCompatActivity{
     //firebase
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseDa    tabase mFirebaseDB;
+    private FirebaseDatabase mFirebaseDB;
     private DatabaseReference myRef;
     private FirebaseMethods mFirebaseMethods;
 
