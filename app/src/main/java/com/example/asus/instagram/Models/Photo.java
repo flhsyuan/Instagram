@@ -16,11 +16,13 @@ public class Photo implements Parcelable{
     private String photo_id;
     private String user_id;
     private String tags;
+    private String position;
     private List<Like> Likes;
     private List<Comment> comments;
 
     public Photo() {
-
+        int dist = 10 + (int)(Math.random()*4990);
+        this.position = String.valueOf(dist);
     }
 
     public static Creator<Photo> getCREATOR() {
@@ -37,14 +39,15 @@ public class Photo implements Parcelable{
     }
 
     public Photo(String caption, String date_created, String image_path, String photo_id,
-                 String user_id, String tags, List<Like> likes, List<Comment> comments) {
+                 String user_id, String tags, String position, List<Like> likes, List<Comment> comments) {
         this.caption = caption;
         this.date_created = date_created;
         this.image_path = image_path;
         this.photo_id = photo_id;
         this.user_id = user_id;
         this.tags = tags;
-        Likes = likes;
+        this.position = position;
+        this.Likes = likes;
         this.comments = comments;
     }
 
@@ -55,6 +58,7 @@ public class Photo implements Parcelable{
         photo_id = in.readString();
         user_id = in.readString();
         tags = in.readString();
+        position = in.readString();
     }
 
     @Override
@@ -65,6 +69,7 @@ public class Photo implements Parcelable{
         dest.writeString(photo_id);
         dest.writeString(user_id);
         dest.writeString(tags);
+        dest.writeString(position);
     }
 
     @Override
@@ -93,8 +98,18 @@ public class Photo implements Parcelable{
                 ", photo_id='" + photo_id + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", tags='" + tags + '\'' +
+                ", position='" + position + '\'' +
                 ", Likes=" + Likes +
+                ", comments=" + comments +
                 '}';
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public String getCaption() {

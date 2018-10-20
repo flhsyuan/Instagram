@@ -139,24 +139,37 @@
                     android:id="@+id/view_all_comments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="View all 5 Comments"
+                    android:text=""
                     android:textColor="@color/grey"
                     android:textSize="18dp"
                     android:layout_below="@id/image_captions"
                     android:layout_marginTop="10dp"/>
 
-                <!--Liked by XXX-->
+                <!--Upload Time-->
                 <TextView
                     android:id="@+id/image_time_post"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="3 Days Ago"
+                    android:text=""
                     android:textColor="@color/grey"
                     android:textSize="18dp"
                     android:layout_below="@id/view_all_comments"
                     android:layout_marginTop="10dp"/>
 
+                <!--Upload Position-->
+                <TextView
+                    android:id="@+id/image_position_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/grey"
+                    android:textSize="18dp"
+                    android:layout_below="@id/image_time_post"
+                    android:layout_marginTop="10dp"/>
+
             </RelativeLayout>
+
+
 
         </RelativeLayout>
 

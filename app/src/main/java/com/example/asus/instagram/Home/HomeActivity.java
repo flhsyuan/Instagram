@@ -1,36 +1,24 @@
 package com.example.asus.instagram.Home;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 
 import com.example.asus.instagram.Login.LoginActivity;
 import com.example.asus.instagram.Models.Photo;
-import com.example.asus.instagram.Models.UserAccountSettings;
 import com.example.asus.instagram.R;
 import com.example.asus.instagram.Utils.BottomNavigationViewHelper;
 import com.example.asus.instagram.Utils.MainfeedListAdapter;
@@ -41,9 +29,6 @@ import com.example.asus.instagram.Utils.ViewCommentsFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class HomeActivity extends AppCompatActivity
@@ -120,15 +105,18 @@ public class HomeActivity extends AppCompatActivity
      */
     private void setupViewPager(){
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new CameraFragment());// Camera icon on the left top of the homePage :index 0
+        adapter.addFragment(new PositionFragment());// Camera icon on the left top of the homePage :index 0
         adapter.addFragment(new HomeFragment()); //icon on the top of the homePage :index 1
         mViewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_home);
+//        tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera);
+//        tabLayout.getTabAt(1).setIcon(R.drawable.ic_home);
+
+        tabLayout.getTabAt(0).setText("Sort by location");
+        tabLayout.getTabAt(1).setText("Sort by date");
 
     }
 

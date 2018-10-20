@@ -111,6 +111,8 @@ public class HomeFragment extends Fragment {
                         photo.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
                         photo.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
 
+                        if ((objectMap.get("position"))!= null) photo.setPosition(objectMap.get("position").toString());
+
                         ArrayList<Comment> comments = new ArrayList<Comment>();
                         for (DataSnapshot dSnapshot : singleSnapshot
                                 .child(getString(R.string.field_comments)).getChildren()){

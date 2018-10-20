@@ -67,7 +67,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
     static class ViewHolder{
         CircleImageView mprofileImage;
         String likesString;
-        TextView username, timeDelta, caption, likes, comments;
+        TextView username, timeDelta, caption, likes, comments, position;
         SquareImageView image;
         ImageView heartRed, heartWhite, comment;
 
@@ -103,10 +103,13 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             holder.comments = (TextView) convertView.findViewById(R.id.view_all_comments);
             holder.timeDelta = (TextView) convertView.findViewById(R.id.image_time_post);
             holder.mprofileImage = (CircleImageView) convertView.findViewById(R.id.protrait_view_post);
+            holder.position = (TextView) convertView.findViewById(R.id.image_position_post);
             holder.heart = new Heart(holder.heartWhite, holder.heartRed);
             holder.photo = getItem(position);
             holder.detector = new GestureDetector(mContext, new GestureListener(holder));
             holder.users = new StringBuilder();
+
+
 
             convertView.setTag(holder);
 
@@ -139,6 +142,8 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         }else {
             holder.timeDelta.setText("Today");
         }
+
+        holder.position.setText(getItem(position).getPosition() + "m");
 
         final ImageLoader imageLoader = ImageLoader.getInstance();
         imageLoader.displayImage(getItem(position).getImage_path(), holder.image);

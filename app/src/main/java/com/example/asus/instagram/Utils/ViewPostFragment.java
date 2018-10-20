@@ -77,7 +77,7 @@ public class ViewPostFragment extends Fragment {
     //widgets
 
     private ImageView mBackArrow, mProtrait, mEllipses, mHeartRed, mHeartWhite, mComment;
-    private TextView mCaption, mUsername, mPostTime, mBackLabel, mLikes, mComments;
+    private TextView mCaption, mUsername, mPostTime, mBackLabel, mLikes, mComments, mPostPosition;
     private SquareImageView mPostImage;
     private BottomNavigationView bottomNavigationView;
 
@@ -102,6 +102,8 @@ public class ViewPostFragment extends Fragment {
         mCaption = (TextView)view.findViewById(R.id.image_captions);
         mUsername = (TextView)view.findViewById(R.id.username_view_post);
         mPostTime = (TextView)view.findViewById(R.id.image_time_post);
+        mPostPosition = (TextView)view.findViewById(R.id.image_position_post);
+
         mLikes = (TextView) view.findViewById(R.id.image_likes);
 //        mBackLabel = (TextView)view.findViewById(R.id.backArrowPost);
 
@@ -246,6 +248,9 @@ public class ViewPostFragment extends Fragment {
                         newPhoto.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
                         newPhoto.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
                         newPhoto.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+
+                        if ((objectMap.get("position"))!= null) newPhoto.setPosition(objectMap.get("position").toString());
+
 
                         List<Comment> commentsList = new ArrayList<Comment>();
                         for (DataSnapshot dSnapshot : singleSnapshot
@@ -452,6 +457,9 @@ public class ViewPostFragment extends Fragment {
         }else{
             mPostTime.setText("Today");
         }
+
+        mPostPosition.setText(mPhoto.getPosition() + "m");
+
         UniversalImageLoader.setImage(mUserAccountSettings.getProfile_photo(), mProtrait,null,"");
         mUsername.setText(mUserAccountSettings.getUsername());
         mLikes.setText(mLikesString);
