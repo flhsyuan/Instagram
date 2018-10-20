@@ -28,7 +28,7 @@ import com.example.asus.instagram.Utils.Permissions;
 /**
  * Created by Yiqun
  */
-public class PhotoFragment extends Fragment{
+public class PhotoFragment extends Fragment {
     private static final String TAG = "PhotoFragment";
 
     //constant
@@ -37,12 +37,9 @@ public class PhotoFragment extends Fragment{
     private static final int CAMERA_REQUEST_CODE = 5;
     private OnFragmentInteractionListener mListener;
     private View rootView;
-    private String mSelectedImage;
     private boolean flashOn = false;
 
     private CapturePreview cPreview;
-
-
 
 
     @Override
@@ -58,7 +55,7 @@ public class PhotoFragment extends Fragment{
 
 
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_photo_from_camera,container,false);
+        rootView = inflater.inflate(R.layout.fragment_photo_from_camera, container, false);
 
         // Create a container that will hold a SurfaceView for camera previews
         cPreview = new CapturePreview(getActivity());

@@ -149,8 +149,8 @@ public class FilterActivity extends AppCompatActivity implements
         editImageFragment = new EditImageFragment();
         editImageFragment.setListener(this);
 
-        adapter.addFragment(filterListFragment, "FILTERS");
-        adapter.addFragment(editImageFragment, "EDIT");
+        adapter.addFragment(filterListFragment, "Filters");
+        adapter.addFragment(editImageFragment, "Edit");
 
         viewPager.setAdapter(adapter);
 

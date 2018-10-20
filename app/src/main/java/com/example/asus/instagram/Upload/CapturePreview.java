@@ -163,7 +163,6 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
         // Uses takePicture method from Camera class to trigger PictureCallback defined above.
         mCamera.takePicture(null, null, mPictureCallback);
     }
-
     // Flash status setter. This is called when a new CapturePreview object is instantiated
     // and gets persistent flash status from PhotoFromCameraFragment.
     public void  setFlashOn(Boolean flashState) {
