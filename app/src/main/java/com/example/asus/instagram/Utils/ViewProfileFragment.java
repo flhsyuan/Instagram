@@ -231,12 +231,17 @@ public class ViewProfileFragment extends Fragment{
                     Photo photo = new Photo();
                     Map<String,Object> objectMap = (HashMap<String,Object>) ds.getValue();
 
-                    photo.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
-                    photo.setTags(objectMap.get(getString(R.string.field_tags)).toString());
-                    photo.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
-                    photo.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
-                    photo.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
-                    photo.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+                    try{
+                        photo.setCaption(objectMap.get(getString(R.string.field_caption)).toString());
+                        photo.setTags(objectMap.get(getString(R.string.field_tags)).toString());
+                        photo.setPhoto_id(objectMap.get(getString(R.string.field_photo_id)).toString());
+                        photo.setDate_created(objectMap.get(getString(R.string.field_date_created)).toString());
+                        photo.setUser_id(objectMap.get(getString(R.string.field_user_id)).toString());
+                        photo.setImage_path(objectMap.get(getString(R.string.field_image_path)).toString());
+                    }catch(NullPointerException e){
+                        Log.d(TAG, "onDataChange: NullPointerException: " + e.getMessage());
+                    }
+
 
                     ArrayList<Comment> comments = new ArrayList<Comment>();
                     for (DataSnapshot dSnapshot: ds

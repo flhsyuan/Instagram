@@ -163,7 +163,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                         }
                     });
-
+                    Intent goToLoginPage = new Intent(mContext,LoginActivity.class);
+                    startActivity(goToLoginPage);
                     finish(); // back to the previous activity
                 }else{
                     //user is signed out
