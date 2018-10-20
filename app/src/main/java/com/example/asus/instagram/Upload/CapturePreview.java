@@ -126,11 +126,55 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
     // Method for taking picture.
     // Uses Camera object PictureCallback to capture image then saves to File object, before
     // passing this file path to the filter activity for post-processing.
+//    public void takePicture(){
+//
+//        Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
+//            @Override
+//            public void onPictureTaken(byte[] data, Camera camera) {
+//                pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+//                if (pictureFile == null){
+//                    Log.d(TAG, "Error creating media file, check storage permissions: " );
+//                    return;
+//                }
+//
+//                // Writing to file.
+//                try {
+//                    Log.i(TAG, "Writing to file");
+//                    FileOutputStream fos = new FileOutputStream(pictureFile);
+//                    fos.write(data);
+//                    fos.close();
+//                    Log.i(TAG, "File closed.");
+//                } catch (FileNotFoundException e) {
+//                    Log.d(TAG, "File not found: " + e.getMessage());
+//                } catch (IOException e) {
+//                    Log.d(TAG, "Error accessing file: " + e.getMessage());
+//                }
+//
+//                //Call filter activity.
+//                Intent intent = new Intent(getContext(),FilterActivity.class);
+//                Log.i("photo", pictureFile.getAbsolutePath());
+//                intent.putExtra("selected_image",pictureFile.getAbsolutePath());
+//                getContext().startActivity(intent);
+//
+//            }
+//
+//        };
+//
+//        // Uses takePicture method from Camera class to trigger PictureCallback defined above.
+//        mCamera.takePicture(null, null, mPictureCallback);
+//    }
+
+
     public void takePicture(){
 
         Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
+
+
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
+
+
+
                 pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
                 if (pictureFile == null){
                     Log.d(TAG, "Error creating media file, check storage permissions: " );
@@ -141,6 +185,7 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
                 try {
                     Log.i(TAG, "Writing to file");
                     FileOutputStream fos = new FileOutputStream(pictureFile);
+
                     fos.write(data);
                     fos.close();
                     Log.i(TAG, "File closed.");
@@ -151,6 +196,7 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
                 }
 
                 //Call filter activity.
+
                 Intent intent = new Intent(getContext(),FilterActivity.class);
                 Log.i("photo", pictureFile.getAbsolutePath());
                 intent.putExtra("selected_image",pictureFile.getAbsolutePath());
@@ -160,9 +206,16 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
         };
 
+        Camera.Parameters parameters = mCamera.getParameters();
+        parameters.set("rotation",90);
+        mCamera.setParameters(parameters);
+
         // Uses takePicture method from Camera class to trigger PictureCallback defined above.
         mCamera.takePicture(null, null, mPictureCallback);
     }
+
+
+
     // Flash status setter. This is called when a new CapturePreview object is instantiated
     // and gets persistent flash status from PhotoFromCameraFragment.
     public void  setFlashOn(Boolean flashState) {
@@ -184,6 +237,7 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
     public void updateFlash(Boolean flash) {
 
         Camera.Parameters param = mCamera.getParameters();
+
 
         if (flashOn) {
             param.setFlashMode("on");
