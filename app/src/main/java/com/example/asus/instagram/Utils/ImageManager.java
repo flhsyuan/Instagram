@@ -25,7 +25,6 @@ public class ImageManager {
         try{
             fis = new FileInputStream(imageFile);
             bitmap = BitmapFactory.decodeStream(fis);
-            bitmap = RotateBitmap(bitmap,90);
         }catch (FileNotFoundException e){
             Log.e(TAG, "getBitmap: FileNotFoundException: " + e.getMessage() );
         }finally {
@@ -38,15 +37,6 @@ public class ImageManager {
         return bitmap;
     }
 
-
-    //xi rotate image:
-
-    public static Bitmap RotateBitmap(Bitmap source, float angle)
-    {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(angle);
-        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
-    }
 
 
 

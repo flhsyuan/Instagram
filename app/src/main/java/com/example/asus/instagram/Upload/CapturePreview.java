@@ -160,6 +160,10 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
         };
 
+        Camera.Parameters parameters = mCamera.getParameters();
+        parameters.set("rotation", 90);
+        mCamera.setParameters(parameters);
+
         // Uses takePicture method from Camera class to trigger PictureCallback defined above.
         mCamera.takePicture(null, null, mPictureCallback);
     }

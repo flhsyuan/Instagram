@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5 DAYS AGO"
+                android:text=""
                 android:textSize="14sp"
                 android:textColor="@color/grey"
                 android:id="@+id/comment_time_posted"
@@ -60,42 +60,11 @@
                 android:layout_marginLeft="15dp"
                 android:layout_below="@+id/comment"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15 likes"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:textColor="@color/grey"
-                android:id="@+id/comment_likes"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_below="@+id/comment"
-                android:layout_toRightOf="@+id/comment_time_posted"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reply"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:textColor="@color/grey"
-                android:id="@+id/comment_reply"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_below="@+id/comment"
-                android:layout_toRightOf="@+id/comment_likes"/>
+
 
         </RelativeLayout>
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:id="@+id/comment_like"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/ic_heart_white"
-            android:layout_centerVertical="true"/>
 
     </RelativeLayout>
 

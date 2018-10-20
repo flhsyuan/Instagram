@@ -33,8 +33,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class DiscoverActivity extends AppCompatActivity {
     private static final String TAG = "DiscoverActivity";
@@ -61,6 +63,10 @@ public class DiscoverActivity extends AppCompatActivity {
         hideKeyBoard();
         setupBottomNavigationView();
         initTextListener();
+//        ListAllSuggestedUser(); // yuan list all suggested users.
+        ListAllFriendsOfFriends();
+
+        Log.d(TAG, "searchForMatch: Time to show the suggested");
 
     }
 
@@ -84,9 +90,10 @@ public class DiscoverActivity extends AppCompatActivity {
 
         mUserList = new ArrayList<>();
         mSearchParameter.addTextChangedListener(new TextWatcher() {
+
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -103,9 +110,170 @@ public class DiscoverActivity extends AppCompatActivity {
         });
     }
 
+    private void searchForMatch(String keyBoardInput){
+        Log.d(TAG, "searchForMatch: searching for matches..."+keyBoardInput);
+
+        mUserList.clear();
+
+        
+        if(keyBoardInput.length() ==0){
+//            ListAllSuggestedUser(); //yuan
+            ListAllFriendsOfFriends();
+
+        }else {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+            Query query = reference.child(getString(R.string.dbname_users))
+                    .orderByChild(getString(R.string.field_username)).equalTo(keyBoardInput);
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                        Log.d(TAG, "onDataChange: We found an user "+singleSnapshot.getValue(User.class).toString());
+
+                        mUserList.add(singleSnapshot.getValue(User.class));
+
+                        updateUserList();
+                        
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+    }
+
+
+
+    //List all suggested users : all other users.
+    private void ListAllSuggestedUser(){
+        Log.d(TAG, "ListAllSuggestedUser: bigin to find suggested users");
+
+        mUserList.clear();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference.child(getString(R.string.dbname_users));
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    Log.d(TAG, "onDataChange: begin to add suggested users");
+
+                    if(!dataSnapshot1.getValue(User.class).getUser_id()
+                            .equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                        mUserList.add(dataSnapshot1.getValue(User.class));
+
+                    }
+                }
+                updateUserList();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+
+
+    //List all suggested users : The friends' friends.
+    private void ListAllFriendsOfFriends(){
+        Log.d(TAG, "ListAllFriendsOfFriends: begin to find all friends' friends");
+
+        //User id of all my following friends.
+        final ArrayList<String> myFollowings = new ArrayList<String>();
+
+        //User id of all my friends' friends
+        final ArrayList<String> friendsFollowings = new ArrayList<String>();
+
+        //Removed duplicated id
+        final ArrayList<String> unDupFriendsFollowings = new ArrayList<String>();
+
+        mUserList.clear();
+        //        String currentUserId =
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+        Query query = reference.child(getString(R.string.dbname_following))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
+                    String friendsID =singleSnapshot.child(getString(R.string.field_user_id)).getValue().toString();
+                    System.out.println("friend: " + friendsID);
+                    myFollowings.add(friendsID);
+                }
+
+                //        Log.d(TAG, "ListAllFriendsOfFriends:  all of my followings are "+ myFollowings.toString());
+
+                // 对于我follow的所有好友，找出它们的所有follow。
+                for (String myFollowing:myFollowings){
+                    DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
+                    Query query1 = reference1.child(getString(R.string.dbname_following))
+                            .child(myFollowing);
+                    query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot singleSnapshot1 :  dataSnapshot.getChildren()){
+                                String friendsfriendsID = singleSnapshot1.child(getString(R.string.field_user_id)).getValue().toString();
+                                if (!friendsfriendsID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                                    friendsFollowings.add(friendsfriendsID);
+                                    System.out.println("ffs:" + friendsFollowings);
+                                }
+
+                            }
+
+                            //        Log.d(TAG, "ListAllFriendsOfFriends:  all of my friends' friends are "+ friendsFollowings.toString());
+                            // Use set to remove duplication.
+                            Set set = new HashSet();
+                            set.addAll(friendsFollowings);
+                            unDupFriendsFollowings.addAll(set);
+
+                            //retrieve all user class.
+                            Log.d(TAG, "ListAllFriendsOfFriends: begin to add to mUser "+ myFollowings.toString());
+                            DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
+                            Query query2 = reference2.child(getString(R.string.dbname_users));
+                            query2.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+
+                                        if( friendsFollowings.contains(dataSnapshot1.getValue(User.class).getUser_id())){
+                                            mUserList.add(dataSnapshot1.getValue(User.class));
+                                        }
+                                    }
+                                    updateUserList();
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
 
     private void updateUserList(){
-
 
         Log.d(TAG, "updateUserList: updating the user list");
 
@@ -131,40 +299,6 @@ public class DiscoverActivity extends AppCompatActivity {
 
 
 
-    private void searchForMatch(String keyBoardInput){
-        Log.d(TAG, "searchForMatch: searching for matches..."+keyBoardInput);
-
-        mUserList.clear();
-
-        if(keyBoardInput.length() ==0){
-
-        }else {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-            Query query = reference.child(getString(R.string.dbname_users))
-                    .orderByChild(getString(R.string.field_username)).equalTo(keyBoardInput);
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                        Log.d(TAG, "onDataChange: We found an user "+singleSnapshot.getValue(User.class).toString());
-
-                        mUserList.add(singleSnapshot.getValue(User.class));
-
-                        updateUserList();
-
-
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-    }
 
     /**
      * BottomNavigationView setup
