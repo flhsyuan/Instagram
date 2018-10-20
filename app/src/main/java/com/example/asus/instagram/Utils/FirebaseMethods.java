@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.example.asus.instagram.Home.HomeActivity;
 import com.example.asus.instagram.Models.Photo;
 import com.example.asus.instagram.Models.User;
-import com.example.asus.instagram.Models.UserAccountsettings;
+import com.example.asus.instagram.Models.UserAccountSettings;
 import com.example.asus.instagram.Models.UserSettings;
 import com.example.asus.instagram.Profile.ProfileActivity;
 import com.example.asus.instagram.R;
@@ -28,7 +28,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.example.asus.instagram.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -329,7 +328,7 @@ public class FirebaseMethods {
         myRef.child(mContext.getString(R.string.dbname_users)).child(userID).setValue(user);
 
         // put the user_account_settings object to the firebase DB
-        UserAccountsettings user_account_setting = new UserAccountsettings(StringManipulation.condenseUsername(username),description,username,0,0,0,profilePhoto,userID);
+        UserAccountSettings user_account_setting = new UserAccountSettings(StringManipulation.condenseUsername(username),description,username,0,0,0,profilePhoto,userID);
         myRef.child(mContext.getString(R.string.dbname_user_account_settings)).child(userID).setValue(user_account_setting);
     }
 
@@ -340,7 +339,7 @@ public class FirebaseMethods {
     public UserSettings getUserSettings(DataSnapshot dataSnapshot){
         Log.d(TAG, "getUserAccountSettings: start to retrieve user account settings from firebase ");
 
-        UserAccountsettings userAccountsettingssettings = new UserAccountsettings();
+        UserAccountSettings userAccountsettingssettings = new UserAccountSettings();
         User user = new User();
 
         for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
@@ -355,37 +354,37 @@ public class FirebaseMethods {
 
                     // get username
                     userAccountsettingssettings.setUsername(
-                            dataSnapshot1.child(userID).getValue(UserAccountsettings.class).getUsername()
+                            dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getUsername()
                     );
 
                     // get description
                     userAccountsettingssettings.setDescription(
-                            dataSnapshot1.child(userID).getValue(UserAccountsettings.class).getDescription()
+                            dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getDescription()
                     );
 
                     // get display name
                     userAccountsettingssettings.setDisplay_name(
-                            dataSnapshot1.child(userID).getValue(UserAccountsettings.class).getDisplay_name()
+                            dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getDisplay_name()
                     );
 
                     // get followers
                     userAccountsettingssettings.setFollowers(
-                            dataSnapshot1.child(userID).getValue(UserAccountsettings.class).getFollowers()
+                            dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getFollowers()
                     );
 
                     // get followings
                     userAccountsettingssettings.setFollowings(
-                            dataSnapshot1.child(userID).getValue(UserAccountsettings.class).getFollowings()
+                            dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getFollowings()
                     );
 
                     // get posts
                     userAccountsettingssettings.setPosts(
-                            dataSnapshot1.child(userID).getValue(UserAccountsettings.class).getPosts()
+                            dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getPosts()
                     );
 
                     // get profile photo
                     userAccountsettingssettings.setProfile_photo(
-                            dataSnapshot1.child(userID).getValue(UserAccountsettings.class).getProfile_photo()
+                            dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getProfile_photo()
                     );
                     Log.d(TAG, "getUserAccountSettings: retrieved userAccountSettings success "+ userAccountsettingssettings.toString());
                 }catch (NullPointerException e){

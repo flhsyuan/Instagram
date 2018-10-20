@@ -23,7 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Discover.DiscoverActivity"></activity>
+        <activity android:name=".Discover.DiscoverActivity"
+            android:windowSoftInputMode="adjustNothing">
+
+        </activity>
         <activity android:name=".Feed.FeedActivity"></activity>
         <activity android:name=".Profile.ProfileActivity"></activity>
         <activity android:name=".Profile.AccountSettingsActivity"></activity>

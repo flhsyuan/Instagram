@@ -10,7 +10,8 @@
     android:orientation="vertical"
     android:paddingTop="55dp"
     android:paddingLeft="25dp"
-    android:paddingRight="25dp">
+    android:paddingRight="25dp"
+    android:background="@color/white">
 
      <!--the logo of ins-->
     <ImageView

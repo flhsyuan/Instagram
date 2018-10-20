@@ -1,6 +1,6 @@
 package com.example.asus.instagram.Models;
 
-public class UserAccountsettings {
+public class UserAccountSettings {
 
     private String username;
     private String description;
@@ -12,7 +12,7 @@ public class UserAccountsettings {
     private String user_id;
 
 
-    public UserAccountsettings(String username, String description, String display_name, long followers, long followings, long posts, String profile_photo, String user_id) {
+    public UserAccountSettings(String username, String description, String display_name, long followers, long followings, long posts, String profile_photo, String user_id) {
         this.username = username;
         this.description = description;
         this.display_name = display_name;
@@ -23,7 +23,7 @@ public class UserAccountsettings {
         this.user_id = user_id;
     }
 
-    public UserAccountsettings() {
+    public UserAccountSettings() {
 
     }
 
@@ -93,7 +93,7 @@ public class UserAccountsettings {
 
     @Override
     public String toString() {
-        return "UserAccountsettings{" +
+        return "UserAccountSettings{" +
                 "username='" + username + '\'' +
                 ", description='" + description + '\'' +
                 ", display_name='" + display_name + '\'' +

@@ -6,11 +6,11 @@ package com.example.asus.instagram.Models;
 public class UserSettings {
 
     private User user;
-    private UserAccountsettings userAccountsettings;
+    private UserAccountSettings userAccountSettings;
 
-    public UserSettings(User user, UserAccountsettings userAccountsettings) {
+    public UserSettings(User user, UserAccountSettings userAccountSettings) {
         this.user = user;
-        this.userAccountsettings = userAccountsettings;
+        this.userAccountSettings = userAccountSettings;
     }
 
     public UserSettings() {
@@ -24,19 +24,19 @@ public class UserSettings {
         this.user = user;
     }
 
-    public UserAccountsettings getUserAccountsettings() {
-        return userAccountsettings;
+    public UserAccountSettings getUserAccountSettings() {
+        return userAccountSettings;
     }
 
-    public void setUserAccountsettings(UserAccountsettings userAccountsettings) {
-        this.userAccountsettings = userAccountsettings;
+    public void setUserAccountSettings(UserAccountSettings userAccountSettings) {
+        this.userAccountSettings = userAccountSettings;
     }
 
     @Override
     public String toString() {
         return "UserSettings{" +
                 "user=" + user +
-                ", userAccountsettings=" + userAccountsettings +
+                ", userAccountSettings=" + userAccountSettings +
                 '}';
     }
 }
