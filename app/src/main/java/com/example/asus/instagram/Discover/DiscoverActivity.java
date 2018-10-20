@@ -222,19 +222,22 @@ public class DiscoverActivity extends AppCompatActivity {
                                 String friendsfriendsID = singleSnapshot1.child(getString(R.string.field_user_id)).getValue().toString();
                                 if (!friendsfriendsID.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                                     friendsFollowings.add(friendsfriendsID);
-                                    System.out.println("ffs:" + friendsFollowings);
                                 }
-
                             }
 
-                            //        Log.d(TAG, "ListAllFriendsOfFriends:  all of my friends' friends are "+ friendsFollowings.toString());
+                            Log.d(TAG, "ListAllFriendsOfFriends:  all of my friends are "+ myFollowings.toString());
+                            Log.d(TAG, "ListAllFriendsOfFriends:  all of my friends' friends are "+ friendsFollowings.toString());
                             // Use set to remove duplication.
-                            Set set = new HashSet();
-                            set.addAll(friendsFollowings);
+
+                            Set set = new HashSet(friendsFollowings);
+                            friendsFollowings.clear();
+
                             unDupFriendsFollowings.addAll(set);
 
+
+                            Log.d(TAG, "onDataChange: unduplicate are "+unDupFriendsFollowings.toString());
+
                             //retrieve all user class.
-                            Log.d(TAG, "ListAllFriendsOfFriends: begin to add to mUser "+ myFollowings.toString());
                             DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
                             Query query2 = reference2.child(getString(R.string.dbname_users));
                             query2.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -242,10 +245,15 @@ public class DiscoverActivity extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
 
-                                        if( friendsFollowings.contains(dataSnapshot1.getValue(User.class).getUser_id())){
+                                        if( unDupFriendsFollowings.contains(dataSnapshot1.getValue(User.class).getUser_id())&&
+                                                !myFollowings.contains(dataSnapshot1.getValue(User.class).getUser_id()) ){
                                             mUserList.add(dataSnapshot1.getValue(User.class));
                                         }
                                     }
+                                    removeDuplicate();
+
+                                    Log.d(TAG, "onDataChange: the two are"+mUserList.toString());
+
                                     updateUserList();
                                 }
 
@@ -267,11 +275,17 @@ public class DiscoverActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
-
+    private void removeDuplicate() {
+        for  ( int  i  =   0 ; i  <  mUserList.size()  -   1 ; i ++ )   {
+            for  ( int  j  =  mUserList.size()  -   1 ; j  >  i; j -- )   {
+                if  (mUserList.get(j).equals(mUserList.get(i)))   {
+                    mUserList.remove(j);
+                }
+            }
+        }
+    }
 
     private void updateUserList(){
 

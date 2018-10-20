@@ -22,6 +22,14 @@ public class User implements Parcelable {
 
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (user_id.equals(((User)obj).user_id)){
+            return true;
+        }
+        return false;
+    }
+
     protected User(Parcel in) {
         username = in.readString();
         user_id = in.readString();
