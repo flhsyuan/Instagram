@@ -1,7 +1,10 @@
 package com.example.asus.instagram.Models;
 //Yuan: the data structure of user information
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
 
     private String username;
     private String user_id;
@@ -18,6 +21,25 @@ public class User {
     public User() {
 
     }
+
+    protected User(Parcel in) {
+        username = in.readString();
+        user_id = in.readString();
+        email = in.readString();
+        phone_number = in.readLong();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public String getUsername() {
         return username;
@@ -59,6 +81,19 @@ public class User {
                 ", email='" + email + '\'' +
                 ", phone_number='" + phone_number + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(username);
+        dest.writeString(user_id);
+        dest.writeString(email);
+        dest.writeLong(phone_number);
     }
 }
 
