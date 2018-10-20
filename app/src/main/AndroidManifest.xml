@@ -42,7 +42,9 @@
         <!--added by Yujie-->
         <activity android:name=".Upload.FilterActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen"></activity>
-
+        <activity android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
 
     </application>
