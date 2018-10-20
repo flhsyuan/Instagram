@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.asus.instagram.Models.User;
 import com.example.asus.instagram.Profile.ProfileActivity;
@@ -49,6 +50,7 @@ public class DiscoverActivity extends AppCompatActivity {
     private List<User> mUserList;
     private UserListAdapter mAdapter;
 
+    private TextView mTextView;
     private ListView mListView;
     private EditText mSearchParameter;
 
@@ -58,6 +60,7 @@ public class DiscoverActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         mSearchParameter = (EditText) findViewById(R.id.search);
+        mTextView = (TextView)findViewById(R.id.textView);
         mListView = (ListView)findViewById(R.id.listView);
         Log.d(TAG, "onCreate: started");
         hideKeyBoard();
@@ -117,10 +120,12 @@ public class DiscoverActivity extends AppCompatActivity {
 
         
         if(keyBoardInput.length() ==0){
+            mTextView.setVisibility(View.VISIBLE);
 //            ListAllSuggestedUser(); //yuan
             ListAllFriendsOfFriends();
 
         }else {
+            mTextView.setVisibility(View.GONE);
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
             Query query = reference.child(getString(R.string.dbname_users))
                     .orderByChild(getString(R.string.field_username)).equalTo(keyBoardInput);
