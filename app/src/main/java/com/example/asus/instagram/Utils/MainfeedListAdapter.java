@@ -19,7 +19,7 @@ import com.example.asus.instagram.Models.Comment;
 import com.example.asus.instagram.Models.Like;
 import com.example.asus.instagram.Models.Photo;
 import com.example.asus.instagram.Models.User;
-import com.example.asus.instagram.Models.UserAccountsettings;
+import com.example.asus.instagram.Models.UserAccountSettings;
 import com.example.asus.instagram.Profile.ProfileActivity;
 import com.example.asus.instagram.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,7 +65,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         SquareImageView image;
         ImageView heartRed, heartWhite, comment;
 
-        UserAccountsettings settings = new UserAccountsettings();
+        UserAccountSettings settings = new UserAccountSettings();
         User user = new User();
         StringBuilder users;
         String mLikesString;
@@ -149,9 +149,9 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
                     //currentUsername = singleSnapshot.getValue(UserAccountsettings.class).getUsername();
                     Log.d(TAG, "onDataChange: found user: "
-                            + singleSnapshot.getValue(UserAccountsettings.class).getUsername());
+                            + singleSnapshot.getValue(UserAccountSettings.class).getUsername());
 
-                    holder.username.setText(singleSnapshot.getValue(UserAccountsettings.class).getUsername());
+                    holder.username.setText(singleSnapshot.getValue(UserAccountSettings.class).getUsername());
                     holder.username.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -165,7 +165,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                         }
                     });
 
-                    imageLoader.displayImage(singleSnapshot.getValue(UserAccountsettings.class).getProfile_photo(),
+                    imageLoader.displayImage(singleSnapshot.getValue(UserAccountSettings.class).getProfile_photo(),
                             holder.mprofileImage);
                     holder.mprofileImage.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -180,7 +180,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                         }
                     });
 
-                    holder.settings = singleSnapshot.getValue(UserAccountsettings.class);
+                    holder.settings = singleSnapshot.getValue(UserAccountSettings.class);
                     holder.comment.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -334,7 +334,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             // get the liked user name from firebase
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                    currentUsername = singleSnapshot.getValue(UserAccountsettings.class).getUsername();
+                    currentUsername = singleSnapshot.getValue(UserAccountSettings.class).getUsername();
                 }
 
             }

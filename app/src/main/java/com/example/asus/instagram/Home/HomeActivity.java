@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 
 import com.example.asus.instagram.Login.LoginActivity;
 import com.example.asus.instagram.Models.Photo;
-import com.example.asus.instagram.Models.UserAccountsettings;
+import com.example.asus.instagram.Models.UserAccountSettings;
 import com.example.asus.instagram.R;
 import com.example.asus.instagram.Utils.BottomNavigationViewHelper;
 import com.example.asus.instagram.Utils.SectionsPagerAdapter;

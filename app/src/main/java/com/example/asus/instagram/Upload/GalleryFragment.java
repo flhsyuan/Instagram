@@ -73,6 +73,8 @@ public class GalleryFragment extends Fragment{
             }
         });
 
+
+        //Call filter activity/profile activity
         TextView nextScreen = (TextView) view.findViewById(R.id.tvNext);
         nextScreen.setOnClickListener(new View.OnClickListener() {
             @Override

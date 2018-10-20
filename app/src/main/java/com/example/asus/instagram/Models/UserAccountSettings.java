@@ -3,7 +3,7 @@ package com.example.asus.instagram.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class UserAccountsettings implements Parcelable {
+public class UserAccountSettings implements Parcelable {
 
     private String username;
     private String description;
@@ -15,7 +15,7 @@ public class UserAccountsettings implements Parcelable {
     private String user_id;
 
 
-    public UserAccountsettings(String username, String description, String display_name, long followers, long followings, long posts, String profile_photo, String user_id) {
+    public UserAccountSettings(String username, String description, String display_name, long followers, long followings, long posts, String profile_photo, String user_id) {
         this.username = username;
         this.description = description;
         this.display_name = display_name;
@@ -26,11 +26,11 @@ public class UserAccountsettings implements Parcelable {
         this.user_id = user_id;
     }
 
-    public UserAccountsettings() {
+    public UserAccountSettings() {
 
     }
 
-    protected UserAccountsettings(Parcel in) {
+    protected UserAccountSettings(Parcel in) {
         username = in.readString();
         description = in.readString();
         display_name = in.readString();
@@ -41,15 +41,15 @@ public class UserAccountsettings implements Parcelable {
         user_id = in.readString();
     }
 
-    public static final Creator<UserAccountsettings> CREATOR = new Creator<UserAccountsettings>() {
+    public static final Creator<UserAccountSettings> CREATOR = new Creator<UserAccountSettings>() {
         @Override
-        public UserAccountsettings createFromParcel(Parcel in) {
-            return new UserAccountsettings(in);
+        public UserAccountSettings createFromParcel(Parcel in) {
+            return new UserAccountSettings(in);
         }
 
         @Override
-        public UserAccountsettings[] newArray(int size) {
-            return new UserAccountsettings[size];
+        public UserAccountSettings[] newArray(int size) {
+            return new UserAccountSettings[size];
         }
     };
 
@@ -119,7 +119,7 @@ public class UserAccountsettings implements Parcelable {
 
     @Override
     public String toString() {
-        return "UserAccountsettings{" +
+        return "UserAccountSettings{" +
                 "username='" + username + '\'' +
                 ", description='" + description + '\'' +
                 ", display_name='" + display_name + '\'' +

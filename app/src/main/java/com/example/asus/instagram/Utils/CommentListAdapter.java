@@ -1,7 +1,6 @@
 package com.example.asus.instagram.Utils;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -13,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.asus.instagram.Models.Comment;
-import com.example.asus.instagram.Models.UserAccountsettings;
+import com.example.asus.instagram.Models.UserAccountSettings;
 import com.example.asus.instagram.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,8 +30,6 @@ import java.util.List;
 import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.support.constraint.Constraints.TAG;
 
 public class CommentListAdapter extends ArrayAdapter<Comment> {
 
@@ -99,11 +96,11 @@ public class CommentListAdapter extends ArrayAdapter<Comment> {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for ( DataSnapshot ds :  dataSnapshot.getChildren()){
-                    holder.username.setText(ds.getValue(UserAccountsettings.class).getUsername());
+                    holder.username.setText(ds.getValue(UserAccountSettings.class).getUsername());
 
                     ImageLoader imageLoader = ImageLoader.getInstance();
 
-                    imageLoader.displayImage(ds.getValue(UserAccountsettings.class).getProfile_photo(),
+                    imageLoader.displayImage(ds.getValue(UserAccountSettings.class).getProfile_photo(),
                             holder.profileImage);
                 }
 
