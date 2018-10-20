@@ -38,6 +38,7 @@ public class FeedActivity extends AppCompatActivity {
      */
     private void setupBottomNavigationView() {
         Log.d(TAG, "setupBottomNavigationView: setting up BottomNavigationView");
+        Log.e("aAAAAAAAAAAAAAAAAAAA","AAAAAAAAAAAAAAAAAAAAAAAA" );
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavViewBar);
         BottomNavigationViewHelper.enableNavigation(mContext,bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();

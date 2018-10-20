@@ -41,6 +41,7 @@ public class ImageManager {
 
 
 
+
     /**
      * return byte array from a bitmap
      * quality is greater than 0 but less than 100
