@@ -22,6 +22,7 @@ import com.example.asus.instagram.Models.Photo;
 import com.example.asus.instagram.Models.UserAccountSettings;
 import com.example.asus.instagram.R;
 import com.example.asus.instagram.Utils.BottomNavigationViewHelper;
+import com.example.asus.instagram.Utils.MainfeedListAdapter;
 import com.example.asus.instagram.Utils.SectionsPagerAdapter;
 import com.example.asus.instagram.Utils.UniversalImageLoader;
 
@@ -31,7 +32,18 @@ import com.google.firebase.auth.FirebaseUser;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity
+        implements MainfeedListAdapter.OnLoadMoreItemsListener{
+
+        @Override
+        public void onLoadMoreItems(){
+            Log.d(TAG, "onLoadMoreItems: displaying more photos");
+            HomeFragment fragment = (HomeFragment)getSupportFragmentManager()
+                    .findFragmentByTag("android.switcher:" + R.id.viewpager_container + ":" + mViewPager.getCurrentItem());
+            if(fragment !=null){
+                fragment.displayMorePhotos();
+            }
+        }
 
     private static final String TAG = "HomeActivity";
     private static final int ACTIVITY_NUM = 0;

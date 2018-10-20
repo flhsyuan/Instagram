@@ -41,7 +41,7 @@ public class AccountSettingsActivity extends AppCompatActivity{
         setContentView(R.layout.activity_account_settings);
         mcontext = AccountSettingsActivity.this;
         Log.d(TAG, "onCreate: start to click account settings ");
-        myViewPager  = (ViewPager) findViewById(R.id.container);
+        myViewPager  = (ViewPager) findViewById(R.id.viewpager_container);
         myRelativeLayout = (RelativeLayout) findViewById(R.id.relLayout1);
 
         setupSettings();
