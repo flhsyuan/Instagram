@@ -16,13 +16,7 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".Home.HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".Home.HomeActivity"></activity>
         <activity android:name=".Discover.DiscoverActivity"
             android:windowSoftInputMode="adjustNothing">
 
@@ -32,7 +26,13 @@
         <activity android:name=".Profile.AccountSettingsActivity"></activity>
         <activity android:name=".Profile.SingOutFragment"></activity>
         <!--Yuan: prevent going back to the login page after logged in-->
-        <activity android:name=".Login.LoginActivity"></activity>
+        <activity android:name=".Login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".Login.RegisterActivity"></activity>
         <!-- added by Yiqun-->
