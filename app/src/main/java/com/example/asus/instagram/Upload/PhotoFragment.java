@@ -1,7 +1,9 @@
 package com.example.asus.instagram.Upload;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -12,6 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
+import android.widget.ToggleButton;
 
 import com.example.asus.instagram.Profile.AccountSettingsActivity;
 import com.example.asus.instagram.Profile.ProfileActivity;
@@ -22,90 +28,125 @@ import com.example.asus.instagram.Utils.Permissions;
 /**
  * Created by Yiqun
  */
-public class PhotoFragment extends Fragment{
+public class PhotoFragment extends Fragment {
     private static final String TAG = "PhotoFragment";
 
     //constant
     private static final int PHOTO_FRAGMENT_NUM = 1;
     private static final int GALLERY_FRAGMENT_NUM = 2;
     private static final int CAMERA_REQUEST_CODE = 5;
+    private OnFragmentInteractionListener mListener;
+    private View rootView;
+    private boolean flashOn = false;
+
+    private CapturePreview cPreview;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_photo,container,false);
-        Log.d(TAG, "onCreateView: started.");
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        Button btnLaunchCamera = (Button) view.findViewById(R.id.btnLaunchCamera);
-        btnLaunchCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: launching camera");
 
-                if(((UploadActivity)getActivity()).getCurrentTabNumber() == PHOTO_FRAGMENT_NUM) {
-                    if(((UploadActivity)getActivity()).checkPermissions(Permissions.CAMERA_PERMISSION[0])){
-                        Log.d(TAG, "onClick: starting camera");
-                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
-                    } else {
-                        Intent intent = new Intent(getActivity(), UploadActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+        // Inflate the layout for this fragment
+        rootView = inflater.inflate(R.layout.fragment_photo_from_camera, container, false);
+
+        // Create a container that will hold a SurfaceView for camera previews
+        cPreview = new CapturePreview(getActivity());
+
+        // Add CapturePreview object to the FrameLayout.
+        FrameLayout preview = (FrameLayout) rootView.findViewById(R.id.SurfaceView);
+        preview.addView(cPreview);
+
+        // Associates setFlashOn method to the flash button in the layout.
+        RelativeLayout flashoptions = (RelativeLayout) rootView.findViewById(R.id.flash_op);
+        flashoptions.bringToFront();
+        cPreview.setFlashOn(flashOn);
+
+        // Associates button press to invoking takePicture method in CapturePreview class.
+        RelativeLayout takepic = (RelativeLayout) rootView.findViewById(R.id.take_pic_button);
+        takepic.bringToFront();
+        Button captureButton = (Button) rootView.findViewById(R.id.capture_button);
+        captureButton.setOnClickListener(
+
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cPreview.takePicture();
+
+
                     }
                 }
-            }
-        });
+        );
 
-        return view;
+        // Listener for the flash togglebutton calls FlashToggle method in CapturePreview class.
+        ToggleButton flashButton = (ToggleButton) rootView.findViewById(R.id.btn_flash);
+        flashButton.setOnCheckedChangeListener(
+
+                new CompoundButton.OnCheckedChangeListener() {
+
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        // get an image from the camera
+                        flashOn = isChecked;
+                        cPreview.FlashToggle();
+                    }
+                }
+        );
+        return rootView;
     }
 
-    private boolean isRootTask(){
-        if(((UploadActivity)getActivity()).getTask() == 0){
-            return true;
+
+    // Whenever fragment is resumed check if current CapturePreview object is still active.
+    // If not create new CapturePreview object and arrange buttons as per onCreateView.
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!cPreview.active) {
+            cPreview = new CapturePreview(getActivity());
+            FrameLayout preview = (FrameLayout) rootView.findViewById(R.id.SurfaceView);
+            preview.addView(cPreview);
         }
-        else {
-            return false;
+
+        RelativeLayout flashoptions = (RelativeLayout) rootView.findViewById(R.id.flash_op);
+        flashoptions.bringToFront();
+        cPreview.setFlashOn(flashOn);
+
+        RelativeLayout takepic = (RelativeLayout) rootView.findViewById(R.id.take_pic_button);
+        takepic.bringToFront();
+    }
+
+    // onPause
+    @Override
+    public void onPause() {
+        super.onPause();
+        cPreview.photoFragmentPause();          // release the camera immediately on pause event
+    }
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        
-        if(requestCode == CAMERA_REQUEST_CODE) {
-            Log.d(TAG, "onActivityResult: done taking a photo.");
-            Log.d(TAG, "onActivityResult: attempting to navigate to final share screen");
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
 
-            Bitmap bitmap;
-            bitmap = (Bitmap) data.getExtras().get("data");
-            if(isRootTask()){
-                try{
-                    //todo：
-                    Log.d(TAG, "onActivityResult: received new bitmap from camera: " + bitmap);
-                    Intent intent = new Intent(getActivity(), FilterActivity.class);
-                    intent.putExtra(getString(R.string.selected_bitmap), bitmap);
-                    startActivity(intent);
-                }catch(NullPointerException e){
-                    Log.d(TAG, "onActivityResult: NullPointerException: " + e.getMessage());
-                }
-            }else{
-                try{
-                    Log.d(TAG, "onActivityResult: received new bitmap from camera: " + bitmap);
-                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
-//                    intent.putExtra(getString(R.string.selected_bitmap), bitmap);
-//                    intent.putExtra(getString(R.string.return_to_fragment),getString(R.string.edit_profile));
-                    FirebaseMethods firebaseMethods = new FirebaseMethods(getActivity());
-                    firebaseMethods.uploadNewPhoto(getString(R.string.profile_photo), null, 0,
-                            null, bitmap);
-                    startActivity(intent);
-                    getActivity().finish();
-                }catch(NullPointerException e){
-                    Log.d(TAG, "onActivityResult: NullPointerException: " + e.getMessage());
-                }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
-            }
-        }
+    public interface OnFragmentInteractionListener {
+        public void onFragmentInteraction(Uri uri);
     }
 }
 
