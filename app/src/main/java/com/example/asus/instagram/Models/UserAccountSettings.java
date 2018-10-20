@@ -1,6 +1,9 @@
 package com.example.asus.instagram.Models;
 
-public class UserAccountSettings {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class UserAccountSettings implements Parcelable {
 
     private String username;
     private String description;
@@ -26,6 +29,29 @@ public class UserAccountSettings {
     public UserAccountSettings() {
 
     }
+
+    protected UserAccountSettings(Parcel in) {
+        username = in.readString();
+        description = in.readString();
+        display_name = in.readString();
+        followers = in.readLong();
+        followings = in.readLong();
+        posts = in.readLong();
+        profile_photo = in.readString();
+        user_id = in.readString();
+    }
+
+    public static final Creator<UserAccountSettings> CREATOR = new Creator<UserAccountSettings>() {
+        @Override
+        public UserAccountSettings createFromParcel(Parcel in) {
+            return new UserAccountSettings(in);
+        }
+
+        @Override
+        public UserAccountSettings[] newArray(int size) {
+            return new UserAccountSettings[size];
+        }
+    };
 
     public String getUsername() {
         return username;
@@ -102,5 +128,22 @@ public class UserAccountSettings {
                 ", posts=" + posts +
                 ", profile_photo='" + profile_photo + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(username);
+        dest.writeString(description);
+        dest.writeString(display_name);
+        dest.writeLong(followers);
+        dest.writeLong(followings);
+        dest.writeLong(posts);
+        dest.writeString(profile_photo);
+        dest.writeString(user_id);
     }
 }

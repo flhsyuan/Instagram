@@ -51,7 +51,7 @@ dependencies {
     implementation 'com.karumi:dexter:4.1.0'
     implementation 'info.androidhive:imagefilters:1.0.7'
     //Yujie:crop related
-    implementation 'com.github.yalantis:ucrop:2.2.2-native'
+//    implementation 'com.github.yalantis:ucrop:2.2.2-native'
     implementation 'com.github.yalantis:ucrop:2.2.2'
 
 

@@ -6,14 +6,13 @@
     <string name="profile_fragment">Profile</string>
     <string name="view_post_fragment">View Post</string>
     <string name="view_comments_fragment">View Comments</string>
-    <string name="view_profile_fragment">View Profile</string>
+    <string name="view_profile_fragment">ViewProfile</string>
 
     <!-- Firebase database fields -->
     <string name="dbname_photos">photos</string>
     <string name="dbname_user_photos">user_photos</string>
     <string name="dbname_following">following</string>
     <string name="dbname_followers">followers</string>
-
     <string name="field_username">username</string>
     <string name="field_email">email</string>
     <string name="field_display_name">display_name</string>
@@ -31,12 +30,13 @@
     <string name="field_tags">tags</string>
     <string name="field_image_path">image_path</string>
 
-    <!--Robin-->
+    <!--strings-->
     <string name="gallery">GALLERY</string>
     <string name="photo">PHOTO</string>
     <string name="string_open_camera">Open Camera</string>
     <string name="string_next">Next</string>
     <string name="string_share">Share</string>
+
 
 
     <!-- photo types -->
@@ -53,11 +53,18 @@
 
     <!-- Bundle Arg Names -->
     <string name="activity_number">activity_number</string>
+    <string name="bundle_photo">bundle_photo</string>
+    <string name="bundle_user_account_settings">bundle_user_account_settings</string>
 
-    <string name="profile_activity">Profile Activity</string>
-    <string name="discover_activity">Discover Activity</string>
+
 
     <!-- Firebase database fields ... reflect the data structure in firebaseDB-->
     <string name="dbname_users">users</string>
     <string name="dbname_user_account_settings">user_account_settings</string>
+
+    <!-- activity names -->
+    <string name="home_activity">Home Activity</string>
+    <string name="profile_activity">Profile Activity</string>
+    <string name="discover_activity">Discover Activity</string>
+
 </resources>

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.asus.instagram.Home.HomeActivity;
 import com.example.asus.instagram.Models.Comment;
 import com.example.asus.instagram.Models.Photo;
 import com.example.asus.instagram.R;
@@ -112,6 +113,13 @@ public class ViewCommentsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating back");
+                if(getCallingActivityFromBundle().equals(getString(R.string.home_activity))){
+                    getActivity().getSupportFragmentManager().popBackStack();
+                    ((HomeActivity)getActivity()).showLayout();
+                }else {
+                    getActivity().getSupportFragmentManager().popBackStack();
+                }
+
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
@@ -154,6 +162,21 @@ public class ViewCommentsFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK);
         sdf.setTimeZone(TimeZone.getTimeZone("Australia/Melbourne"));
         return sdf.format(new Date());
+    }
+
+    /**
+     * retrieve Photos From incoming Bundle from profile
+     * @return
+     */
+    private String getCallingActivityFromBundle(){
+        Log.d(TAG, "getCallingActivityFromBundle: arguments "+getArguments());
+
+        Bundle bundle = this.getArguments();
+        if(bundle != null){
+            return bundle.getString(getString(R.string.home_activity));
+        }else{
+            return null;
+        }
     }
 
     /**
