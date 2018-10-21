@@ -88,13 +88,18 @@ public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
             holder = (YouFeedAdapter.ViewHolder) convertView.getTag();
         }
 
+        System.out.println(getItem(position).getDate_created());
+
         String timestampDifference = getUpdatedTime(getItem(position));
         if(!timestampDifference.equals("0")){
             holder.timeDelta.setText(timestampDifference + "d");
+            System.out.println(timestampDifference);
         }else {
             holder.timeDelta.setText("Today");
+            System.out.println(timestampDifference);
         }
 
+        holder.description.setText("follows you");
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Query query = reference.child(mContext.getString(R.string.dbname_user_account_settings))

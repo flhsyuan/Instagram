@@ -83,6 +83,11 @@ public class YouFragment extends Fragment {
                             singleSnapshot.child(getString(R.string.field_user_id)).getValue());
 
                     mFollower.add(singleSnapshot.child(getString(R.string.field_user_id)).getValue().toString());
+                    YouFeed youFeed = new YouFeed();
+                    youFeed.setUser_id(singleSnapshot.child(getString(R.string.field_user_id)).getValue().toString());
+                    youFeed.setDate_created(singleSnapshot.child(getString(R.string.field_date_created)).getValue().toString());
+                    mYouFeed.add(youFeed);
+                    displayYouFeeds();
 
                 }
 
@@ -144,6 +149,7 @@ public class YouFragment extends Fragment {
                             youFeed.setDate_created(dSnapshot.getValue(Like.class).getDate_created());
                             youFeed.setPhoto_id(photo.getPhoto_id());
                             mYouFeed.add(youFeed);
+                            displayYouFeeds();
                         }
                         photo.setLikes(likeList);
                         mPhotos.add(photo);
@@ -152,7 +158,7 @@ public class YouFragment extends Fragment {
                         Log.d(TAG, "onDataChange: NullPointerException ");
                     }
                 }
-                displayYouFeeds();
+
             }
 
             @Override

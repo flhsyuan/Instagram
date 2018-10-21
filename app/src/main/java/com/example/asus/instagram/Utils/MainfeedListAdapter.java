@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -303,7 +304,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                                     .removeValue();
 
                             mReference.child(mContext.getString(R.string.dbname_user_photos))
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .child(mHolder.photo.getUser_id())
                                     .child(mHolder.photo.getPhoto_id())
                                     .child(mContext.getString(R.string.field_likes))
                                     .child(keyID)
@@ -339,6 +340,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
         String newLikeID = mReference.push().getKey();
         Like like =  new Like();
         like.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        like.setDate_created(getTimeStamp());
 
         mReference.child(mContext.getString(R.string.dbname_photos))
                 .child(holder.photo.getPhoto_id())
@@ -347,11 +349,12 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
                 .setValue(like);
 
         mReference.child(mContext.getString(R.string.dbname_user_photos))
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(holder.photo.getUser_id())
                 .child(holder.photo.getPhoto_id())
                 .child(mContext.getString(R.string.field_likes))
                 .child(newLikeID)
                 .setValue(like);
+
 
         holder.heart.toggleLike();
         getLikesString(holder);
@@ -504,6 +507,12 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             });
         }
         holder.likes.setText(likesString);
+    }
+
+    private String getTimeStamp(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK);
+        sdf.setTimeZone(TimeZone.getTimeZone("Australia/Melbourne"));
+        return sdf.format(new Date());
     }
 
     /**

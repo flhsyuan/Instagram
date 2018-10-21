@@ -39,6 +39,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -386,6 +387,7 @@ public class ViewPostFragment extends Fragment {
         String newLikeID = myRef.push().getKey();
         Like like =  new Like();
         like.setUser_id(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        like.setDate_created(getTimeStamp());
 
         myRef.child(getString(R.string.dbname_photos))
                 .child(mPhoto.getPhoto_id())
@@ -399,6 +401,7 @@ public class ViewPostFragment extends Fragment {
                 .child(getString(R.string.field_likes))
                 .child(newLikeID)
                 .setValue(like);
+
 
         mHeart.toggleLike();
         getLikesString();
@@ -417,6 +420,12 @@ public class ViewPostFragment extends Fragment {
         }else{
             return 0;
         }
+    }
+
+    private String getTimeStamp(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK);
+        sdf.setTimeZone(TimeZone.getTimeZone("Australia/Melbourne"));
+        return sdf.format(new Date());
     }
 
     /**
