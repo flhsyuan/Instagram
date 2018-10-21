@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.asus.instagram.Login.LoginActivity;
 import com.example.asus.instagram.Models.Comment;
 import com.example.asus.instagram.Models.Like;
 import com.example.asus.instagram.Models.Photo;
@@ -48,8 +47,6 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
 public class ProfileFragment extends Fragment{
     //firebase authentication
