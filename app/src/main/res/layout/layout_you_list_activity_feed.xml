@@ -6,7 +6,6 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/btn_photo"
         android:id="@+id/iv_follower_photo"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
@@ -16,23 +15,47 @@
 
     <TextView
 
+        android:id="@+id/tv_like_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="biestrada started following you"
-        android:id="@+id/tv_description"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="3dp"
+        android:layout_toStartOf="@+id/iv_following_photo"
+        android:layout_toEndOf="@+id/tv_user"
         android:singleLine="false"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_toRightOf="@+id/iv_follower_photo"
-        android:layout_toLeftOf="@+id/iv_unfollow" />
+        android:text="likes your post"
+        android:textColor="@color/black" />
+
+    <TextView
+
+        android:id="@+id/tv_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/iv_follower_photo"
+        android:singleLine="false"
+        android:text="user"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+
+    <TextView
+
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_user"
+        android:layout_marginTop="2dp"
+        android:layout_toRightOf="@id/iv_follower_photo"
+        android:text="2 days ago"
+        android:textColor="@color/normal_filter" />
 
 
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/btn_user_followed"
-        android:id="@+id/iv_unfollow"
+        android:id="@+id/iv_following_photo"
         android:visibility="visible"
         android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
