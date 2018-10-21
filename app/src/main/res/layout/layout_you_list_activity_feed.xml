@@ -6,7 +6,6 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/btn_photo"
         android:id="@+id/iv_follower_photo"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="10dp"
@@ -25,14 +24,13 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_toRightOf="@+id/iv_follower_photo"
-        android:layout_toLeftOf="@+id/iv_unfollow" />
+        android:layout_toLeftOf="@+id/iv_photo" />
 
 
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/btn_user_followed"
-        android:id="@+id/iv_unfollow"
+        android:id="@+id/iv_photo"
         android:visibility="visible"
         android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"
