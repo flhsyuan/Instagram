@@ -1,55 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="50dp"
         android:layout_height="50dp"
+        android:id="@+id/iv_follower_photo"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp">
+        android:layout_marginBottom="10dp"
+        android:layout_centerVertical="true"/>
 
-        <ImageView
+    <TextView
 
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/iv_photo"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cassie liked 8 posts. 48m"
-            android:id="@+id/tv_description"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/iv_photo"
-            android:layout_toEndOf="@+id/iv_photo"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp" />
-
-
-    </RelativeLayout>
-
-    <GridView
-        android:id="@+id/gv_photos"
+        android:id="@+id/tv_like_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="3dp"
+        android:layout_toLeftOf="@+id/iv_following_photo"
+        android:layout_toEndOf="@+id/tv_user"
+        android:text="likes your post"
+        android:textColor="@color/black" />
+
+    <TextView
+
+        android:id="@+id/tv_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/iv_follower_photo"
+        android:singleLine="false"
+        android:text="user"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+    <TextView
+
+        android:id="@+id/tv_user2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_toEndOf="@+id/tv_like_post"
+        android:layout_toLeftOf="@id/iv_following_photo"
+        android:singleLine="false"
+        android:text="user"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+    <TextView
+
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_user"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@id/iv_follower_photo"
+        android:layout_marginStart="5dp"
+        android:text="2 days ago"
+        android:textColor="@color/normal_filter" />
+
+
+    <ImageView
+        android:layout_width="50dp"
+
+        android:layout_height="50dp"
+        android:id="@+id/iv_following_photo"
+        android:visibility="visible"
+        android:layout_marginEnd="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:columnWidth="50dp"
-        android:drawSelectorOnTop="true"
-        android:gravity="fill"
-        android:numColumns="5"
-        android:stretchMode="none"
-        android:verticalSpacing="1dp"
-        android:focusable="true"
-        android:clickable="true"
-        android:layout_marginLeft="70dp"
-        android:layout_marginStart="70dp">
-
-    </GridView>
+        android:layout_centerVertical="true" />
 
 
-</LinearLayout>
+</RelativeLayout>

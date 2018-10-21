@@ -1,10 +1,7 @@
 package com.example.asus.instagram.Utils;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.asus.instagram.Models.Photo;
+import com.example.asus.instagram.Models.FollowingFeed;
 import com.example.asus.instagram.Models.User;
 import com.example.asus.instagram.Models.UserAccountSettings;
 import com.example.asus.instagram.Models.YouFeed;
@@ -26,8 +23,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import org.w3c.dom.Text;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,55 +33,55 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
-
-public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
-    private static final String TAG= "YouFeedAdapter";
+public class FollowingFeedAdapter extends ArrayAdapter<FollowingFeed>{
+    private static final String TAG= "FollowingFeedAdapter";
 
     private LayoutInflater mInflater;
-    private List<YouFeed> mYouFeed = null;
+    private List<FollowingFeed> mFollowingFeed = null;
     private int layoutResource;
     private Context mContext;
 
 
-    public YouFeedAdapter(@NonNull Context context, int resource, List<YouFeed> objects) {
+    public FollowingFeedAdapter(@NonNull Context context, int resource, ArrayList<FollowingFeed> objects) {
         super(context, resource, objects);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mContext = context;
         layoutResource = resource;
-        this.mYouFeed = objects;
+        this.mFollowingFeed = objects;
+        System.out.println("adapter:");
+        System.out.println(mFollowingFeed);
 
     }
 
 
     private static class ViewHolder{
-        TextView username, description, timeDelta;
-        ImageView profileImage, myPhoto;
+        TextView username, description, timeDelta, username2;
+        ImageView profileImage, likesPhoto;
     }
 
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        final YouFeedAdapter.ViewHolder holder;
+        final FollowingFeedAdapter.ViewHolder holder;
 
         if(convertView ==null){
             convertView = mInflater.inflate(layoutResource, parent,false);
-            holder = new YouFeedAdapter.ViewHolder();
+            holder = new FollowingFeedAdapter.ViewHolder();
 
             holder.username = (TextView) convertView.findViewById(R.id.tv_user);
+            holder.username2 = (TextView) convertView.findViewById(R.id.tv_user2);
             holder.profileImage = (ImageView) convertView.findViewById(R.id.iv_follower_photo);
-            holder.myPhoto = (ImageView) convertView.findViewById(R.id.iv_following_photo);
+            holder.likesPhoto = (ImageView) convertView.findViewById(R.id.iv_following_photo);
             holder.description = (TextView) convertView.findViewById(R.id.tv_like_post);
             holder.timeDelta = (TextView) convertView.findViewById(R.id.tv_time);
 
             convertView.setTag(holder);
         }else {
-            holder = (YouFeedAdapter.ViewHolder) convertView.getTag();
+            holder = (FollowingFeedAdapter.ViewHolder) convertView.getTag();
         }
 
-        System.out.println(getItem(position).getDate_created());
 
         String timestampDifference = getUpdatedTime(getItem(position));
         if(!timestampDifference.equals("0")){
@@ -97,7 +92,7 @@ public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
             System.out.println(timestampDifference);
         }
 
-        holder.description.setText("follows you");
+        holder.description.setText("follows");
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         Query query = reference.child(mContext.getString(R.string.dbname_user_account_settings))
@@ -138,8 +133,8 @@ public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
                     ImageLoader imageLoader = ImageLoader.getInstance();
 
                     imageLoader.displayImage(objectMap.get("image_path").toString(),
-                            holder.myPhoto);
-                    holder.description.setText("likes your post");
+                            holder.likesPhoto);
+                    holder.description.setText("likes post");
                 }
 
             }
@@ -175,6 +170,31 @@ public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
             }
         });
 
+        //get the user object
+        Query userQuery2 = reference
+                .child(mContext.getString(R.string.dbname_users))
+                .orderByChild(mContext.getString(R.string.field_user_id))
+                .equalTo(getItem(position).getFollower_id());
+        userQuery2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+
+            // get the liked user name from firebase
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    Log.d(TAG, "onDataChange: found user: " +
+                            singleSnapshot.getValue(User.class).getUsername());
+
+                    holder.username2.setText(singleSnapshot.getValue(User.class).getUsername());
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
 
         return convertView;
@@ -183,7 +203,7 @@ public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
     /**
      * calculate how many days the photo was updated
      */
-    private String getUpdatedTime(YouFeed feed)  {
+    private String getUpdatedTime(FollowingFeed feed)  {
         final String feedTime = feed.getDate_created();
 
         Log.d(TAG, "getUpdatedTime: calculating how many days the photo was updated ");

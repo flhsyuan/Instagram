@@ -143,6 +143,15 @@ public class ViewProfileFragment extends Fragment{
                         .child(getString(R.string.field_user_id))
                         .setValue(mUser.getUser_id());
 
+                //update
+                FirebaseDatabase.getInstance().getReference()
+                        .child(getString(R.string.dbname_following))
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child(mUser.getUser_id())
+                        .child(getString(R.string.field_date_created))
+                        .setValue(getTimeStamp());
+
+
                 FirebaseDatabase.getInstance().getReference()
                         .child(getString(R.string.dbname_followers))
                         .child(mUser.getUser_id())
