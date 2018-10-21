@@ -22,11 +22,9 @@ import com.example.asus.instagram.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -338,7 +336,7 @@ public class FirebaseMethods {
     public UserSettings getUserSettings(DataSnapshot dataSnapshot){
         Log.d(TAG, "getUserAccountSettings: start to retrieve user account settings from firebase ");
 
-        UserAccountSettings userAccountsettingssettings = new UserAccountSettings();
+        UserAccountSettings userAccountSettings = new UserAccountSettings();
         User user = new User();
 
         for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
@@ -352,40 +350,40 @@ public class FirebaseMethods {
                 try{
 
                     // get username
-                    userAccountsettingssettings.setUsername(
+                    userAccountSettings.setUsername(
                             dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getUsername()
                     );
 
                     // get description
-                    userAccountsettingssettings.setDescription(
+                    userAccountSettings.setDescription(
                             dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getDescription()
                     );
 
                     // get display name
-                    userAccountsettingssettings.setDisplay_name(
+                    userAccountSettings.setDisplay_name(
                             dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getDisplay_name()
                     );
 
                     // get followers
-                    userAccountsettingssettings.setFollowers(
+                    userAccountSettings.setFollowers(
                             dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getFollowers()
                     );
 
                     // get followings
-                    userAccountsettingssettings.setFollowings(
+                    userAccountSettings.setFollowings(
                             dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getFollowings()
                     );
 
                     // get posts
-                    userAccountsettingssettings.setPosts(
+                    userAccountSettings.setPosts(
                             dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getPosts()
                     );
 
                     // get profile photo
-                    userAccountsettingssettings.setProfile_photo(
+                    userAccountSettings.setProfile_photo(
                             dataSnapshot1.child(userID).getValue(UserAccountSettings.class).getProfile_photo()
                     );
-                    Log.d(TAG, "getUserAccountSettings: retrieved userAccountSettings success "+ userAccountsettingssettings.toString());
+                    Log.d(TAG, "getUserAccountSettings: retrieved userAccountSettings success "+ userAccountSettings.toString());
                 }catch (NullPointerException e){
                     Log.d(TAG, "getUserAccountSettings: NullPointerException "+e.getMessage());
                 }
@@ -429,7 +427,7 @@ public class FirebaseMethods {
             }
         }
 
-        UserSettings userSettings = new UserSettings(user,userAccountsettingssettings);
+        UserSettings userSettings = new UserSettings(user, userAccountSettings);
         return userSettings;
 
     }

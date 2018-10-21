@@ -12,7 +12,6 @@ import android.widget.ListView;
 
 import com.example.asus.instagram.Models.Comment;
 import com.example.asus.instagram.Models.Photo;
-import com.example.asus.instagram.Models.UserAccountSettings;
 import com.example.asus.instagram.R;
 import com.example.asus.instagram.Utils.MainfeedListAdapter;
 import com.google.firebase.auth.FirebaseAuth;

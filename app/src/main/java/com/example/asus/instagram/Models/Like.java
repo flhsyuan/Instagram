@@ -4,6 +4,16 @@ public class Like {
 
     private String user_id;
 
+    public String getDate_created() {
+        return date_created;
+    }
+
+    public void setDate_created(String date_created) {
+        this.date_created = date_created;
+    }
+
+    private String date_created;
+
     public Like(String user_id) {
         this.user_id = user_id;
     }
@@ -24,6 +34,7 @@ public class Like {
     public String toString() {
         return "Like{" +
                 "user_id='" + user_id + '\'' +
+                ", date_created='" + date_created + '\'' +
                 '}';
     }
 }

@@ -160,7 +160,7 @@ public class MainfeedListAdapter extends ArrayAdapter<Photo> {
             // get the liked user name from firebase
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
-                    //currentUsername = singleSnapshot.getValue(UserAccountsettings.class).getUsername();
+                    //currentUsername = singleSnapshot.getValue(UserAccountSettings.class).getUsername();
                     Log.d(TAG, "onDataChange: found user: "
                             + singleSnapshot.getValue(UserAccountSettings.class).getUsername());
 
