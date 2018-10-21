@@ -66,8 +66,8 @@ public class DiscoverActivity extends AppCompatActivity {
         hideKeyBoard();
         setupBottomNavigationView();
         initTextListener();
-//        ListAllSuggestedUser(); // yuan list all suggested users.
-        ListAllFriendsOfFriends();
+        suggestAccordingly();//yuanw
+
 
         Log.d(TAG, "searchForMatch: Time to show the suggested");
 
@@ -121,8 +121,7 @@ public class DiscoverActivity extends AppCompatActivity {
         
         if(keyBoardInput.length() ==0){
             mTextView.setVisibility(View.VISIBLE);
-//            ListAllSuggestedUser(); //yuan
-            ListAllFriendsOfFriends();
+            suggestAccordingly();//yuanw
 
         }else {
             mTextView.setVisibility(View.GONE);
@@ -174,7 +173,6 @@ public class DiscoverActivity extends AppCompatActivity {
                 }
                 updateUserList();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -209,13 +207,10 @@ public class DiscoverActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot singleSnapshot :  dataSnapshot.getChildren()){
                     String friendsID =singleSnapshot.child(getString(R.string.field_user_id)).getValue().toString();
-                    System.out.println("friend: " + friendsID);
+
                     myFollowings.add(friendsID);
                 }
 
-                //        Log.d(TAG, "ListAllFriendsOfFriends:  all of my followings are "+ myFollowings.toString());
-
-                // 对于我follow的所有好友，找出它们的所有follow。
                 for (String myFollowing:myFollowings){
                     DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference();
                     Query query1 = reference1.child(getString(R.string.dbname_following))
@@ -230,8 +225,6 @@ public class DiscoverActivity extends AppCompatActivity {
                                 }
                             }
 
-                            Log.d(TAG, "ListAllFriendsOfFriends:  all of my friends are "+ myFollowings.toString());
-                            Log.d(TAG, "ListAllFriendsOfFriends:  all of my friends' friends are "+ friendsFollowings.toString());
                             // Use set to remove duplication.
 
                             Set set = new HashSet(friendsFollowings);
@@ -316,8 +309,40 @@ public class DiscoverActivity extends AppCompatActivity {
 
     }
 
+    private void suggestAccordingly(){
+        //User id of all my following friends.
+        final ArrayList<String> myFollowings = new ArrayList<String>();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+        Query query = reference.child(getString(R.string.dbname_following))
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot singleSnapshot : dataSnapshot.getChildren()){
+                    System.out.println("the singlesnap is "+singleSnapshot.toString());
+                    myFollowings.add(singleSnapshot.getValue(User.class).getUser_id());
+
+                }
+
+                System.out.println("the followings are "+myFollowings);
+                if (myFollowings.size()==0){
+                    ListAllSuggestedUser(); // yuan list all suggested users.
+                }else {
+                    ListAllFriendsOfFriends();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
+    }
 
     /**
      * BottomNavigationView setup
