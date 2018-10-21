@@ -2,6 +2,8 @@ package com.example.asus.instagram.Upload;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,7 +15,9 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import com.example.asus.instagram.R;
+import com.example.asus.instagram.Utils.ImageManager;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -27,6 +31,7 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
     // Attributes for each CaptuerPreview instance.
     public File pictureFile;
+    public Bitmap bitmap;
     SurfaceHolder holder;   // Holders are meant for controlling a surface size and format.
     static Camera mCamera;    // Camera class deprecated in much later API 21.
     public static final int MEDIA_TYPE_IMAGE = 1;   // Only want photo (not video).
@@ -127,11 +132,14 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
     // Uses Camera object PictureCallback to capture image then saves to File object, before
     // passing this file path to the filter activity for post-processing.
     public void takePicture(){
-
+        Camera.Parameters parameters = mCamera.getParameters();
+        parameters.setRotation(90);
+        mCamera.setParameters(parameters);
         Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
                 pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+
                 if (pictureFile == null){
                     Log.d(TAG, "Error creating media file, check storage permissions: " );
                     return;
@@ -160,13 +168,12 @@ public class CapturePreview extends SurfaceView implements SurfaceHolder.Callbac
 
         };
 
-        Camera.Parameters parameters = mCamera.getParameters();
-        parameters.set("rotation", 90);
-        mCamera.setParameters(parameters);
+
 
         // Uses takePicture method from Camera class to trigger PictureCallback defined above.
         mCamera.takePicture(null, null, mPictureCallback);
     }
+
     // Flash status setter. This is called when a new CapturePreview object is instantiated
     // and gets persistent flash status from PhotoFromCameraFragment.
     public void  setFlashOn(Boolean flashState) {
