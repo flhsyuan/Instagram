@@ -26,6 +26,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.w3c.dom.Text;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +63,7 @@ public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
 
 
     private static class ViewHolder{
-        TextView username;
+        TextView username, description, timeDelta;
         ImageView profileImage, myPhoto;
     }
 
@@ -75,13 +77,22 @@ public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
             convertView = mInflater.inflate(layoutResource, parent,false);
             holder = new YouFeedAdapter.ViewHolder();
 
-            holder.username = (TextView) convertView.findViewById(R.id.tv_description);
+            holder.username = (TextView) convertView.findViewById(R.id.tv_user);
             holder.profileImage = (ImageView) convertView.findViewById(R.id.iv_follower_photo);
-            holder.myPhoto = (ImageView) convertView.findViewById(R.id.iv_photo);
+            holder.myPhoto = (ImageView) convertView.findViewById(R.id.iv_following_photo);
+            holder.description = (TextView) convertView.findViewById(R.id.tv_like_post);
+            holder.timeDelta = (TextView) convertView.findViewById(R.id.tv_time);
 
             convertView.setTag(holder);
         }else {
             holder = (YouFeedAdapter.ViewHolder) convertView.getTag();
+        }
+
+        String timestampDifference = getUpdatedTime(getItem(position));
+        if(!timestampDifference.equals("0")){
+            holder.timeDelta.setText(timestampDifference + "d");
+        }else {
+            holder.timeDelta.setText("Today");
         }
 
 
@@ -125,6 +136,7 @@ public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
 
                     imageLoader.displayImage(objectMap.get("image_path").toString(),
                             holder.myPhoto);
+                    holder.description.setText("likes your post");
                 }
 
             }
@@ -168,8 +180,8 @@ public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
     /**
      * calculate how many days the photo was updated
      */
-    private String getUpdatedTime(Photo photo)  {
-        final String photoTime = photo.getDate_created();
+    private String getUpdatedTime(YouFeed feed)  {
+        final String feedTime = feed.getDate_created();
 
         Log.d(TAG, "getUpdatedTime: calculating how many days the photo was updated ");
         String period = "";
@@ -181,7 +193,7 @@ public class YouFeedAdapter extends ArrayAdapter<YouFeed>{
 
         Date timeStamp;
         try {
-            timeStamp = timeFormat.parse(photoTime);
+            timeStamp = timeFormat.parse(feedTime);
             period = String.valueOf(Math.round( today.getTime() - timeStamp.getTime() )/1000/60/60/24);
 
         }catch (ParseException p){

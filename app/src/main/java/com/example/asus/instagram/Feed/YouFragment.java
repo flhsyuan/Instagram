@@ -152,7 +152,6 @@ public class YouFragment extends Fragment {
                         Log.d(TAG, "onDataChange: NullPointerException ");
                     }
                 }
-                System.out.println(mYouFeed);
                 displayYouFeeds();
             }
 
